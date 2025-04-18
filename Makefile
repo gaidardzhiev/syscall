@@ -5,7 +5,7 @@ BINS=cat
 all: $(BINS)
 
 $(BINS): %: %.c
-        $(CC) -o $@ $<
+	$(CC) -o $@ $<
 
 clean:
 	rm $(BINS)

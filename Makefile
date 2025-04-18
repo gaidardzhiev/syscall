@@ -1,10 +1,10 @@
 CC=tcc
-BINS=cat
+BIN=cat
 ARCH=$(shell uname -m)
 
-all: $(BINS)
+all: $(BIN)
 
-$(BINS): %: %.c
+$(BIN): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
 			$(CC) -o $@ $<; \
@@ -16,4 +16,4 @@ $(BINS): %: %.c
 	esac
 
 clean:
-	rm -f $(BINS)
+	rm -f $(BIN)

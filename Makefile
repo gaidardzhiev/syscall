@@ -9,7 +9,3 @@ $(BINS): %: %.c
 
 clean:
 	rm $(BINS)
-
-.SILENT: man
-man:
-	echo cat.c - concatenate files and print on the stdout using low level system calls 

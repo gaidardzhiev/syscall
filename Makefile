@@ -1,5 +1,5 @@
-CC=tcc
-BIN=cat
+CC=gcc
+BIN=cat echo
 ARCH=$(shell uname -m)
 
 all: $(BIN)

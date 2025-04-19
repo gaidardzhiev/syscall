@@ -7,7 +7,7 @@ all: $(BIN)
 $(BIN): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -o $@ $<; \
+			$(CC) -static -o $@ $<; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \

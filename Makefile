@@ -1,5 +1,5 @@
 CC=gcc
-BIN=cat echo
+BIN=cat echo sleep
 ARCH=$(shell uname -m)
 
 all: $(BIN)

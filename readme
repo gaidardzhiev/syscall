@@ -3,3 +3,5 @@ cat.c - concatenate files and print to stdout using low-level system calls via s
 echo.c - write arguments to stdout using low-level system calls bypassing libc via direct svc instructions to the kernel
 
 sleep.c - suspend execution for a specified number of seconds by directly invoking the nanosleep syscall using inline assembly without relying on libc
+
+false.c - do nothing unsuccessfully by directly invoking the kernel exit syscall with status 1 using inline assembly and bypassing libc entirely

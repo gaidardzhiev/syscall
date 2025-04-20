@@ -37,6 +37,9 @@ $(filter-out false true,$(BIN)): %: %.c
 		armv8l) \
 			$(CC) -s -o $@ $<; \
 			;; \
+		x86_64) \
+			$(CROSS) -s -o $@ $<; \
+			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \
 			exit 1; \

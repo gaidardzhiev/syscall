@@ -1,7 +1,7 @@
 #!/bin/sh
 
 fmake() {
-	{ [ -f false ]; [ -f sleep ]; [ -f echo ]; } && {
+	{ [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; } && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {

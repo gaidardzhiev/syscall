@@ -1,5 +1,6 @@
 CC=gcc
 CROSS=arm-linux-gnueabihf-gcc
+CFL=-march=armv8-a -marm
 BIN=cat echo sleep true false
 ARCH=$(shell uname -m)
 
@@ -11,7 +12,7 @@ true: true.c
 			$(CC) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		x86_64) \
-			$(CROSS) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
+			$(CROSS) $(CFL) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \
@@ -25,7 +26,7 @@ false: false.c
 			$(CC) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		x86_64) \
-			$(CROSS) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
+			$(CROSS) $(CFL) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \
@@ -39,7 +40,7 @@ $(filter-out false true,$(BIN)): %: %.c
 			$(CC) -s -o $@ $<; \
 			;; \
 		x86_64) \
-			$(CROSS) -s -o $@ $<; \
+			$(CROSS) $(CFL) -s -o $@ $<; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \

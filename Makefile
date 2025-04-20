@@ -1,4 +1,5 @@
 CC=gcc
+CROSS=arm-linux-gnueabihf-gcc
 BIN=cat echo sleep true false
 ARCH=$(shell uname -m)
 

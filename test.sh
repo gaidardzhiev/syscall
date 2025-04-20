@@ -1,16 +1,14 @@
 #!/bin/sh
 
 fmake() {
-	for b in false sleep;
-	do
-		[ -f $b ] && {
-			printf "$b exist proceeding with test...\n";
+	[ -f false ] && \
+		[ -f sleep ] && {
+			printf "bins exist proceeding with test...\n";
 			return 0;
 		} || {
-			printf "$b do not exist running make...\n";
+			printf "bins do not exist running make...\n";
 			make;
 		}
-	done
 }
 
 ffalse() {

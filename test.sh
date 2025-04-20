@@ -49,20 +49,21 @@ fecho() {
 
 fcat() {
 	e="hack the world"
-	f="file"
+	f="/tmp/file"
 	printf "%s\n" "$e" > "$f"
 	o=$(./cat "$f")
 	[ "$o" = "$e" ] && {
 		printf "./cat PASSED...\n";
+		rm -f "$f"
 		return 0;
 	} || {
 		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "$o" "$e";
+		rm -f "$f"
 		return 5;
 	}
-	rm "$f" || return 6
 }
 
 
 { fmake && ffalse && fsleep && fecho && fcat; RET=$?; } || exit 1
 
-[ "$RET" -ne 0 ] && printf "%d\n" "$RET"
+#[ "$RET" -ne 0 ] && printf "%d\n" "$RET"

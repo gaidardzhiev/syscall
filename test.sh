@@ -64,7 +64,6 @@ fcat() {
 }
 
 
-{ fmake && ffalse && fsleep && fecho && fcat; ret=$?; } || exit 1
+{ fmake && ffalse && fsleep && fecho && fcat; r=$?; } || exit 1
 
-[ "$ret" -eq 0 ] 2>/dev/null || printf "%s\n" "$ret"
-#[ "$RET" -ne 0 ] && printf "%d\n" "$RET"
+[ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

@@ -9,6 +9,9 @@ true: true.c
 		armv8l) \
 			$(CC) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
+		x86_64) \
+			$(CROSS) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
+			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \
 			exit 1; \

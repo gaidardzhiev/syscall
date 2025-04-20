@@ -1,7 +1,7 @@
 #!/bin/sh
 
 fmake() {
-	{ [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; } && {
+	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; } && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {
@@ -11,10 +11,20 @@ fmake() {
 		}
 }
 
+ftrue() {
+	./true && {
+		printf "./true PASSED...\n";
+		return 0;
+	} || {
+		printf "./true FAILED...\n";
+		return 2;
+	}
+}
+
 ffalse() {
 	./false && {
 		printf "./false FAILED...\n";
-		return 2;
+		return 3;
 	} || {
 		printf "./false PASSED...\n";
 		return 0;
@@ -32,7 +42,7 @@ fsleep() {
 		return 0;
 	} || {
 		printf "./sleep FAILED...\n";
-		return 3;
+		return 4;
 	}
 }
 
@@ -44,7 +54,7 @@ fecho() {
 		return 0;
 	} || {
 		printf "./echo FAILED...\ngot '%s'\nexpected '%s'\n" "$x" "$z";
-		return 4;
+		return 5;
 	}
 }
 
@@ -60,11 +70,11 @@ fcat() {
 	} || {
 		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "$o" "$e";
 		rm -f "$f"
-		return 5;
+		return 6;
 	}
 }
 
 
-{ fmake && ffalse && fsleep && fecho && fcat; r=$?; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat; r=$?; } || exit 1
 
 [ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

@@ -49,7 +49,7 @@ fecho() {
 
 fcat() {
 	e="hack the world"
-	f="x"
+	f="file"
 	printf "%s\n" "$e" > "$f"
 	o=$(./cat "$f")
 	[ "$o" = "$e" ] && {
@@ -59,7 +59,7 @@ fcat() {
 		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "$o" "$e";
 		return 5;
 	}
-	rm -f "$f"
+	rm "$f" || return 6
 }
 
 

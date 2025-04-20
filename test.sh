@@ -65,11 +65,11 @@ fcat() {
 	o=$(./cat "$f")
 	[ "$o" = "$e" ] && {
 		printf "./cat PASSED...\n";
-		rm -f "$f"
+		rm -f "$f";
 		return 0;
 	} || {
 		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "$o" "$e";
-		rm -f "$f"
+		rm -f "$f";
 		return 6;
 	}
 }

@@ -1,5 +1,18 @@
 #!/bin/sh
 
+fmake() {
+	for b in false sleep;
+	do
+		[ -f $b ] && {
+			printf "$b exist proceeding with test...\n";
+			return 0;
+		} || {
+			printf "$b do not exist running make...\n";
+			make;
+		}
+	done
+}
+
 ffalse() {
 	./false && {
 		printf "./false FAILED...\n";
@@ -27,6 +40,6 @@ fsleep() {
 
 
 
-{ ffalse && fsleep; RET=$?; } || exit 1
+{ fmake && ffalse && fsleep; RET=$?; } || exit 1
 
 [ "$RET" -ne 0 ] && printf "%d\n" "$RET"

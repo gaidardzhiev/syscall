@@ -2,11 +2,12 @@
 
 fmake() {
 	{ [ -f false ]; [ -f sleep ]; [ -f echo ]; } && {
-			printf "bins exist proceeding with test...\n";
+			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {
 			printf "bins do not exist running make...\n";
-			make;
+			m=$(make 2>&1 1>/dev/null);
+			printf "%s\n" "$m" >&2;
 		}
 }
 

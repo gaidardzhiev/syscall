@@ -47,7 +47,22 @@ fecho() {
 	}
 }
 
+fcat() {
+	e="hack the world"
+	f="x"
+	printf "%s\n" "$e" > "$f"
+	o=$(./cat "$f")
+	[ "$o" = "$e" ] && {
+		printf "./cat PASSED...\n";
+		return 0;
+	} || {
+		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "$o" "$e";
+		return 5;
+	}
+	rm -f "$f"
+}
 
-{ fmake && ffalse && fsleep && fecho; RET=$?; } || exit 1
+
+{ fmake && ffalse && fsleep && fecho && fcat; RET=$?; } || exit 1
 
 [ "$RET" -ne 0 ] && printf "%d\n" "$RET"

@@ -47,8 +47,8 @@ fsleep() {
 }
 
 fecho() {
-    z="hack the world"
-    x=$(./echo "hack the world")
+    z="hack_the_world"
+    x=$(./echo "hack_the_world")
     [ "$x" = "$z" ] && {
 		printf "./echo PASSED...\n";
 		return 0;
@@ -59,7 +59,7 @@ fecho() {
 }
 
 fcat() {
-	e="hack the world"
+	e="hack_the_world"
 	f="/tmp/file"
 	printf "%s\n" "$e" > "$f"
 	o=$(./cat "$f")

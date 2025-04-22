@@ -75,7 +75,9 @@ fcat() {
 }
 
 fbridge() {
-	[ "$(./bridge 20)" = "$( (./bridge 20 & echo $!) )" ] && {
+	./bridge 20 > /tmp/o 2>&1 & p=$!
+	wait $p
+	[ "$(cat /tmp/o)" -eq "$p" ] && {
 		printf "./bridge PASSED...\n";
 		return 0;
 	} || {

@@ -74,7 +74,16 @@ fcat() {
 	}
 }
 
+fbridge() {
+	[ "$(./bridge 20)" = "$( (./bridge 20 & echo $!) )" ] && {
+		printf "./bridge PASSED...\n";
+		return 0;
+	} || {
+		printf "./bridge FAILED...\n";
+		return 7;
+	}
+}
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat; r=$?; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge; r=$?; } || exit 1
 
 [ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

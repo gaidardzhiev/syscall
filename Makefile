@@ -1,7 +1,7 @@
 CC=gcc
 CROSS=arm-linux-gnueabihf-gcc
 CFL=-march=armv8-a -marm
-BIN=cat echo sleep true false
+BIN=cat echo sleep true false bridge
 ARCH=$(shell uname -m)
 
 all: $(BIN)

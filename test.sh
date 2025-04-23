@@ -88,6 +88,19 @@ fbridge() {
 	}
 }
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge; r=$?; } || exit 1
+ftty() {
+	z=$(command -v ./tty 2>/dev/null)
+	x=$(command -v tty 2>/dev/null)
+	[ "$( "$z" )" = "$( "$x" )" ] && {
+		printf "./tty PASSED...\n";
+		return 0;
+	} || {
+		printf "./tty FAILED...\n";
+		return 8;
+	}
+}
+
+
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty; r=$?; } || exit 1
 
 [ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

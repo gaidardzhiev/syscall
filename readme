@@ -9,3 +9,5 @@ false.c - do nothing unsuccessfully by directly invoking the kernel exit syscall
 true.c - do nothing successfully by directly invoking the kernel exit syscall with status 0 using inline assembly and bypassing libc entirely
 
 bridge.c - bridge between raw syscalls and the POSIX shell allowing scripts to access any syscall by number and arguments
+
+tty.c - print the file name of the terminal connected to standard input using inline assembly

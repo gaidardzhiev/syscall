@@ -1,7 +1,7 @@
 #!/bin/sh
 
 fmake() {
-	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; } && {
+	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; [ -f sync ]; } && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {
@@ -100,7 +100,16 @@ ftty() {
 	}
 }
 
+fsync() {
+	strace ./sync 2>&1 | grep -s "sync()" && {
+		printf "./sync PASSED...\n";
+		return 0;
+	} || {
+		printf "./sync FAILED...\n";
+		return 9;
+	}
+}
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty; r=$?; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync; r=$?; } || exit 1
 
 [ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

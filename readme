@@ -12,4 +12,4 @@ bridge.c - bridge between raw syscalls and the POSIX shell allowing scripts to a
 
 tty.c - print the file name of the terminal connected to standard input using inline assembly
 
-shell.c - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly (commands with arguments achived by spliting the input line into tokens and building an array that is passed to execve which expects the first element to be the command and the rest to be the arguments ending with a NULL pointer)
+shell.c - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly

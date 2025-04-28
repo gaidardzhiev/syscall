@@ -6,7 +6,7 @@ fmake() {
 			return 0;
 		} || {
 			printf "bins do not exist running make...\n";
-			m=$(make 2>&1 1>/dev/null);
+			m=$(make -j8 2>&1 1>/dev/null);
 			printf "%s\n" "$m" >&2;
 		}
 }
@@ -101,7 +101,7 @@ ftty() {
 }
 
 fsync() {
-	strace ./sync 2>&1 | grep -s "sync()" && {
+	strace ./sync 2>&1 | grep -s "sync()" >/dev/null && {
 		printf "./sync PASSED...\n";
 		return 0;
 	} || {

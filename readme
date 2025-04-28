@@ -11,3 +11,5 @@ true.c - do nothing successfully by directly invoking the kernel exit syscall wi
 bridge.c - bridge between raw syscalls and the POSIX shell allowing scripts to access any syscall by number and arguments
 
 tty.c - print the file name of the terminal connected to standard input using inline assembly
+
+shell.c - minimalist shell that cycles through reading input forking executing commands and waiting using only raw syscalls and inline assembly (commands with arguments by spliting the input line into tokens and building an argv array from them then passeding to execve which expects the first element to be the command and the rest to be the arguments ending with a NULL pointer)

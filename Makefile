@@ -1,7 +1,7 @@
 CC=gcc
 CROSS=arm-linux-gnueabihf-gcc
 CFL=-march=armv8-a -marm
-BIN=cat echo sleep true false bridge tty sync
+BIN=cat echo sleep true false bridge tty sync shell
 ARCH=$(shell uname -m)
 
 all: $(BIN)
@@ -48,7 +48,21 @@ sync: sync.c
 			;; \
 	esac
 
-$(filter-out false true sync,$(BIN)): %: %.c
+shell: shell.c
+	@case $(ARCH) in \
+		armv8l) \
+			$(CC) -nostdlib -static -fno-stack-protector -o $@ $<; \
+			;; \
+		x86_64) \
+			$(CROSS) $(CFL) -nostdlib -static -fno-stack-protector -o $@ $<; \
+			;; \
+		*) \
+			printf "unsupported architecture $(ARCH)\n"; \
+			exit 1; \
+			;; \
+	esac
+
+$(filter-out false true sync shell,$(BIN)): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
 			$(CC) -s -o $@ $<; \

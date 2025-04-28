@@ -13,7 +13,7 @@ void _start() {
 			"mov r7, %3\n"
 			"svc 0\n"
 			:
-			: "r"(O), "r"(" sh # "), "r"(6), "r"(4)
+			: "r"(O), "r"("root# "), "r"(6), "r"(4)
 			: "r0", "r1", "r2", "r7"
 		);
 		asm volatile (

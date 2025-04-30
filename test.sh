@@ -110,6 +110,8 @@ fsync() {
 	}
 }
 
+#fshell()
+
 { fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync; r=$?; } || exit 1
 
 [ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

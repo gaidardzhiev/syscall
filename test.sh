@@ -110,7 +110,7 @@ fsync() {
 	}
 }
 
-#fshell()
+#TODO: fshell()
 
 { fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync; r=$?; } || exit 1
 

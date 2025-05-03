@@ -1,10 +1,10 @@
 #include <unistd.h>
 #include <string.h>
 
-void f(const char *e) {
-	size_t n = strlen(e);
+void f(const char *v) {
+	size_t n = strlen(v);
 	int d = STDOUT_FILENO;
-	const char *m = e;
+	const char *m = v;
 	size_t c = n;
 	int l = 4;
 	asm volatile(

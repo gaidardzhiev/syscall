@@ -65,10 +65,10 @@ shell: shell.c
 $(filter-out false true sync shell,$(BIN)): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -s -o $@ $<; \
+			$(CC) -s -static -o $@ $<; \
 			;; \
 		x86_64) \
-			$(CROSS) $(CFL) -s -o $@ $<; \
+			$(CROSS) $(CFL) -static -s -o $@ $<; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \

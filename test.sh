@@ -117,14 +117,15 @@ fcrt0() {
 	as -o crt0.o crt0.s
 	gcc -c -o main.o "$MAIN"
 	gcc -static -nostdlib -e _start -o main crt0.o main.o
-	rm *.o
 	./main arg1 arg2
 	RET=$(echo $?)
 	[ $RET -eq 3 ] && {
 		printf "crt0 PASSED...\n";
+		rm "$MAIN" crt0.o main.o
 		return 0;
 	} || {
 		printf "crt0 FAILED...\n";
+		rm "$MAIN" crt0.o main.o
 		return 10;
 	}
 }

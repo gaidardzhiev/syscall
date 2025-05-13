@@ -121,11 +121,11 @@ fcrt0() {
 	RET=$(echo $?)
 	[ $RET -eq 3 ] && {
 		printf "crt0 PASSED...\n";
-		rm "$MAIN" crt0.o main.o
+		rm "$MAIN" crt0.o main.o main
 		return 0;
 	} || {
 		printf "crt0 FAILED...\n";
-		rm "$MAIN" crt0.o main.o
+		rm "$MAIN" crt0.o main.o main
 		return 10;
 	}
 }

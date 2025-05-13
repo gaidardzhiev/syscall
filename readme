@@ -13,3 +13,5 @@ bridge.c - bridge between raw syscalls and the POSIX shell allowing scripts to a
 tty.c - print the file name of the terminal connected to standard input using inline assembly
 
 shell.c - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly
+
+crt0.s - minimal assembly startup code that initializes the process by extracting argc and argv from the stack, calls main and then invoke exit syscall with main return value as the process exit code

@@ -1,7 +1,8 @@
+AS=as
 CC=gcc
 CROSS=arm-linux-gnueabihf-gcc
 CFL=-march=armv8-a -marm
-BIN=cat echo sleep true false bridge tty sync shell
+BIN=cat echo sleep true false bridge tty sync shell test_crt0
 ARCH=$(shell uname -m)
 
 all: $(BIN)
@@ -62,7 +63,21 @@ shell: shell.c
 			;; \
 	esac
 
-$(filter-out false true sync shell,$(BIN)): %: %.c
+test_crt0: test_crt0.c
+	@case $(ARCH) in \
+		armv8l) \
+			$(AS) -o crt0.o crt0.s; \
+			$(CC) -c -o test_crt0.o test_crt0.c; \
+			$(CC) -static -nostdlib -e _start -o test_crt0 crt0.o test_crt0.o; \
+			;; \
+		*) \
+			printf "unsupported architecture $(ARCH)\n"; \
+			exit 1; \
+			;; \
+	esac
+
+
+$(filter-out false true sync shell test_crt0,$(BIN)): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
 			$(CC) -s -static -o $@ $<; \
@@ -77,4 +92,4 @@ $(filter-out false true sync shell,$(BIN)): %: %.c
 	esac
 
 clean:
-	rm -f $(BIN)
+	rm -f $(BIN) crt0.o test_crt0.o

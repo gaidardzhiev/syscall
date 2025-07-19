@@ -40,3 +40,9 @@ The tools include:
 - Targeted at ARMv8l 32-bit Linux environments.
 
 ---
+
+## License
+
+This project is provided under the GPL3 License.
+
+

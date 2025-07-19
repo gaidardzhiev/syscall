@@ -1,19 +1,19 @@
 # Minimalist *nix Utilities Using Raw Syscalls and Inline Assembly (ARMv8l 32-bit)
 
-This project implements a collection of classic Unix utilities written in C and ARMv8l 32-bit inline assembly that **bypass the C standard library (`libc`)** entirely, invoking system calls directly via inline `svc` instructions. The goal is to demonstrate low-level Linux syscall usage, fast minimal binaries, and bare-metal style programming on ARM Linux.
+This project implements a collection of classic `*nix` utilities written in C and ARMv8l 32-bit inline assembly that **bypass the C standard library (`libc`)** entirely, invoking system calls directly.
 
 ---
 
 ## Overview
 
-Each tool in this project uses **direct kernel system calls** by crafting syscall numbers and arguments inline, interfacing with the kernel via the ARM-specific `svc #0` instruction. This is done without any libc wrappers or stdio buffering, often using a minimal syscall bridge and custom startup code in assembly.
+Each tool in this project uses **direct kernel system calls** by crafting syscall numbers and arguments inline, interfacing with the kernel via the ARM specific `svc #0` instruction. This is done without any libc wrappers or stdio buffering, often using a minimal syscall bridge and custom startup code in assembly.
 
 The tools include:
 
 | Program   | Description                                                                                         | Key Technique                                        |
 |-----------|-------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | `cat.c`  | Concatenates files and writes to stdout using low-level syscalls via `syscall()` from glibc       | `syscall()` call from glibc but only for syscall NR |
-| `echo.c` | Writes command-line arguments to stdout using direct `svc` instructions bypassing libc            | Inline ARM assembly with `svc #0` syscall           |
+| `echo.c` | Writes command line arguments to stdout using direct `svc` instructions bypassing libc            | Inline ARM assembly with `svc #0` syscall           |
 | `sleep.c`| Suspends execution for specified seconds by directly invoking `nanosleep` syscall inline          | Inline assembly syscall without libc                |
 | `false.c`| Immediately exits with status code 1 by invoking `exit` syscall using inline assembly             | Raw exit syscall with status 1                       |
 | `true.c` | Same as `false.c` but exits with status code 0                                                    | Raw exit syscall with status 0                       |

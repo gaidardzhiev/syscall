@@ -1,6 +1,6 @@
 # Minimalist *nix Utilities Using Raw Syscalls and Inline Assembly (ARMv8l 32-bit)
 
-This project implements a collection of classic `*nix` utilities written in C and ARMv8l 32-bit inline assembly that **bypass the C standard library (`libc`)** entirely, invoking system calls directly.
+This project implements a collection of classic `*nix` utilities written in C and ARMv8l 32-bit inline assembly that **bypass the C standard library (`libc`)** entirely, invoking system calls directly. The goal of this project is to deeply explore and understand how computers truly operate at the hardware level by writing software that interacts directly with the Linux kernel via raw system calls and ARMv8l 32bit assembly bypassing all high level abstractions such as libc. This approach teaches the essential principles of low level programming, reveals how operating systems manage processes and resources, and exemplifies how software should be programmed when maximum control, efficiency, and minimal abstraction are required.
 
 ---
 

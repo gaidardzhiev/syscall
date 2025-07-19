@@ -10,17 +10,24 @@ Each tool in this project uses **direct kernel system calls** by crafting syscal
 
 The tools include:
 
-| Program   | Description                                                                                         | Key Technique                                        |
-|-----------|-------------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| `cat.c`  | Concatenates files and writes to stdout using low-level syscalls via `syscall()` from glibc       | `syscall()` call from glibc but only for syscall NR |
-| `echo.c` | Writes command line arguments to stdout using direct `svc` instructions bypassing libc            | Inline ARM assembly with `svc #0` syscall           |
-| `sleep.c`| Suspends execution for specified seconds by directly invoking `nanosleep` syscall inline          | Inline assembly syscall without libc                |
-| `false.c`| Immediately exits with status code 1 by invoking `exit` syscall using inline assembly             | Raw exit syscall with status 1                       |
-| `true.c` | Same as `false.c` but exits with status code 0                                                    | Raw exit syscall with status 0                       |
-| `bridge.c`| Provides a bridge interface allowing POSIX shell scripts to invoke any syscall by number & args  | Raw syscall interface bridging user input to kernel |
-| `tty.c`  | Prints the filename of the terminal connected to STDIN via inline assembly                         | Inline assembly syscall reading `/proc/self/fd/0`   |
-| `shell.c`| Minimal shell loop implementing `read`, `fork`, `execve`, and `wait` syscalls with assembly       | Inline assembly minimal shell loop                   |
-| `crt0.s` | ARMv8l 32-bit minimal assembly startup code                                                      | Extract `argc` / `argv` from stack, call `main()`, exit syscall |
+- `cat.c` - concatenate files and print to stdout using low level system calls via 'syscall()` provided by `glibc`
+
+- `echo.c` - write arguments to stdout using low level system calls bypassing libc via direct svc instructions to the kernel
+
+- sleep.c - suspend execution for a specified number of seconds by directly invoking the nanosleep syscall using inline assembly without relying on libc
+
+- false.c - do nothing unsuccessfully by directly invoking the kernel exit syscall with status 1 using inline assembly and bypassing libc entirely
+
+- true.c - do nothing successfully by directly invoking the kernel exit syscall with status 0 using inline assembly and bypassing libc entirely
+
+- bridge.c - bridge between raw syscalls and the POSIX shell allowing scripts to access any syscall by number and arguments
+
+- tty.c - print the file name of the terminal connected to standard input using inline assembly
+
+- shell.c - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly
+
+- crt0.s - minimal armv8l 32bit assembly startup code that initializes the process by extracting argc and argv from the stack, calls main and then invokes the exit syscall with main's return value as the process exit code
+
 
 ---
 

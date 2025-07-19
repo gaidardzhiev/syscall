@@ -37,7 +37,6 @@ The tools include:
 - Learn low-level Linux ARM syscall conventions.
 - Understand mixing inline assembly with C for syscall invocation.
 - Create minimalist tools demonstrating syscall usage, process lifecycle, and shell basics.
-- Targeted at ARMv8l 32-bit Linux environments.
 
 ---
 

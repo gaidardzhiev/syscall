@@ -6,27 +6,27 @@ This project implements a collection of classic `*nix` utilities written in C an
 
 ## Overview
 
-Each tool in this project uses **direct kernel system calls** by crafting syscall numbers and arguments inline, interfacing with the kernel via the ARM specific `svc #0` instruction. This is done without any libc wrappers or stdio buffering, often using a minimal syscall bridge and custom startup code in assembly.
+Each tool in this project uses **direct kernel system calls** by crafting syscall numbers and arguments inline, interfacing with the kernel via the ARM specific `svc #0` instruction. This is done without any `libc` wrappers or stdio buffering, often using a minimal syscall bridge and custom startup code in assembly.
 
 The tools include:
 
 - `cat.c` - concatenate files and print to stdout using low level system calls via `syscall()` provided by `glibc`
 
-- `echo.c` - write arguments to stdout using low level system calls bypassing libc via direct svc instructions to the kernel
+- `echo.c` - write arguments to stdout using low level system calls bypassing `libc` via direct svc instructions to the kernel
 
-- sleep.c - suspend execution for a specified number of seconds by directly invoking the nanosleep syscall using inline assembly without relying on libc
+- `sleep.c` - suspend execution for a specified number of seconds by directly invoking the `nanosleep` syscall using inline assembly without relying on `libc`
 
-- false.c - do nothing unsuccessfully by directly invoking the kernel exit syscall with status 1 using inline assembly and bypassing libc entirely
+- `false.c` - do nothing unsuccessfully by directly invoking the kernel `exit` syscall with status 1 using inline assembly and bypassing `libc` entirely
 
-- true.c - do nothing successfully by directly invoking the kernel exit syscall with status 0 using inline assembly and bypassing libc entirely
+- `true.c` - do nothing successfully by directly invoking the kernel exit syscall with status 0 using inline assembly and bypassing `libc` entirely
 
-- bridge.c - bridge between raw syscalls and the POSIX shell allowing scripts to access any syscall by number and arguments
+- `bridge.c` - bridge between raw syscalls and the POSIX shell allowing scripts to access any syscall by number and arguments
 
-- tty.c - print the file name of the terminal connected to standard input using inline assembly
+- `tty.c` - print the file name of the terminal connected to standard input using inline assembly
 
-- shell.c - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly
+- `shell.c` - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly
 
-- crt0.s - minimal armv8l 32bit assembly startup code that initializes the process by extracting argc and argv from the stack, calls main and then invokes the exit syscall with main's return value as the process exit code
+- `crt0.s` - minimal armv8l 32bit assembly startup code that initializes the process by extracting `argc` and `argv` from the stack, calls `main()` and then invokes the `exit` syscall with main's return value as the process exit code
 
 
 ---
@@ -34,9 +34,9 @@ The tools include:
 ## Motivation
 
 - **Bypass standard libc wrappers** for syscalls for minimal overhead and maximum control.
-- Learn low-level Linux ARM syscall conventions.
+- Learn low level Linux ARMV8L syscall conventions.
 - Understand mixing inline assembly with C for syscall invocation.
-- Create minimalist tools demonstrating syscall usage, process lifecycle, and shell basics.
+- Create minimalist tools demonstrating syscall usage, process lifecycle, and shell basics...
 
 ---
 

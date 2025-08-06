@@ -119,7 +119,7 @@ fcrt0() {
 	gcc -static -nostdlib -e _start -o main crt0.o main.o
 	./main arg1 arg2
 	RET=$(echo $?)
-	[ $RET -eq 3 ] && {
+	[ "$RET" -eq 3 ] && {
 		printf "crt0 PASSED...\n";
 		rm "$MAIN" crt0.o main.o main
 		return 0;

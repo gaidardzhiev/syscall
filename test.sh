@@ -132,6 +132,6 @@ fcrt0() {
 
 #TODO: fshell()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0; r=$?; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0; r="$?"; } || exit 1
 
 [ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"

@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2025 Ivan Gaydardzhiev
+ * Licensed under the GPL-3.0-only
+ */
+
 #define I 0
 #define O 1
 

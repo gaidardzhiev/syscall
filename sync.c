@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2025 Ivan Gaydardzhiev
+ * Licensed under the GPL-3.0-only
+ */
+
 void _ep(void) __attribute__((noreturn));
 void _ep(void) {
 	__asm__ volatile (

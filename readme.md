@@ -28,6 +28,8 @@ The tools include:
 
 - `crt0.s` - minimal armv8l 32bit assembly startup code that initializes the process by extracting `argc` and `argv` from the stack, calls `main()` and then invokes the `exit` syscall with main's return value as the process exit code
 
+- `id.c` - print user, group, and system identity by invoking only kernel syscalls directly with ARM EABI inline assembly, bypassing all standard C library functions
+
 
 ---
 

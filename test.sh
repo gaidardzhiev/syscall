@@ -7,7 +7,7 @@ fmake() {
 		} || {
 			printf "bins do not exist running make...\n";
 			m=$(make -j8 2>&1 1>/dev/null);
-			printf "%s\n" "$m" >&2;
+			printf "%s\n" "${m}" >&2;
 		}
 }
 
@@ -36,7 +36,7 @@ fsleep() {
 	./sleep 1 && {
 		e=$(date +%s);
 		t=$((e - s));
-		[ "$t" -eq 1 ];
+		[ "${t}" -eq 1 ];
 	} && {
 		printf "./sleep PASSED...\n";
 		return 0;
@@ -49,11 +49,11 @@ fsleep() {
 fecho() {
     z="hack_the_world"
     x=$(./echo "hack_the_world")
-    [ "$x" = "$z" ] && {
+    [ "${x}" = "${z}" ] && {
 		printf "./echo PASSED...\n";
 		return 0;
 	} || {
-		printf "./echo FAILED...\ngot '%s'\nexpected '%s'\n" "$x" "$z";
+		printf "./echo FAILED...\ngot '%s'\nexpected '%s'\n" "${x}" "${z}";
 		return 5;
 	}
 }
@@ -61,23 +61,23 @@ fecho() {
 fcat() {
 	e="hack_the_world"
 	f="/tmp/file"
-	printf "%s\n" "$e" > "$f"
-	o=$(./cat "$f")
-	[ "$o" = "$e" ] && {
+	printf "%s\n" "${e}" > "${f}"
+	o=$(./cat "${f}")
+	[ "${o}" = "${e}" ] && {
 		printf "./cat PASSED...\n";
-		rm -f "$f";
+		rm -f "${f}";
 		return 0;
 	} || {
-		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "$o" "$e";
-		rm -f "$f";
+		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "${o}" "${e}";
+		rm -f "${f}";
 		return 6;
 	}
 }
 
 fbridge() {
-	./bridge 20 > /tmp/q 2>&1 & p="$!"
-	wait "$p"
-	[ "$(cat /tmp/q)" -eq "$p" ] && {
+	./bridge 20 > /tmp/q 2>&1 & p="${!}"
+	wait "${p}"
+	[ "$(cat /tmp/q)" -eq "${p}" ] && {
 		printf "./bridge PASSED...\n";
 		rm /tmp/q;
 		return 0;
@@ -91,7 +91,7 @@ fbridge() {
 ftty() {
 	z=$(command -v ./tty 2>/dev/null)
 	x=$(command -v tty 2>/dev/null)
-	[ "$( "$z" )" = "$( "$x" )" ] && {
+	[ "$( "${z}" )" = "$( "${x}" )" ] && {
 		printf "./tty PASSED...\n";
 		return 0;
 	} || {
@@ -112,26 +112,26 @@ fsync() {
 
 fcrt0() {
 	MAIN="/tmp/main.c"
-	touch "$MAIN"
-	printf "int main(int argc, char **argv){return argc;}" > "$MAIN"
+	touch "${MAIN}"
+	printf "int main(int argc, char **argv){return argc;}" > "${MAIN}"
 	as -o crt0.o crt0.s
-	gcc -c -o main.o "$MAIN"
+	gcc -c -o main.o "${MAIN}"
 	gcc -static -nostdlib -e _start -o main crt0.o main.o
 	./main arg1 arg2
-	RET=$(echo $?)
-	[ "$RET" -eq 3 ] && {
+	RET=$(echo ${?})
+	[ "${RET}" -eq 3 ] && {
 		printf "crt0 PASSED...\n";
-		rm "$MAIN" crt0.o main.o main
+		rm "${MAIN}" crt0.o main.o main
 		return 0;
 	} || {
 		printf "crt0 FAILED...\n";
-		rm "$MAIN" crt0.o main.o main
+		rm "${MAIN}" crt0.o main.o main
 		return 10;
 	}
 }
 
 #TODO: fshell()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0; r="$?"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0; r="${?}"; } || exit 1
 
-[ "$r" -eq 0 ] 2>/dev/null || printf "%s\n" "$r"
+[ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

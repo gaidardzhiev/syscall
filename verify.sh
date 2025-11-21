@@ -13,20 +13,20 @@ fmake() {
 
 ftrue() {
 	./true && {
-		printf "./true PASSED...\n";
+		printf "%-15s PASSED\n" "true";
 		return 0;
 	} || {
-		printf "./true FAILED...\n";
+		printf "%-15s FAILED\n" "true";
 		return 2;
 	}
 }
 
 ffalse() {
 	./false && {
-		printf "./false FAILED...\n";
+		printf "%-15s FAILED\n" "false";
 		return 3;
 	} || {
-		printf "./false PASSED...\n";
+		printf "%-15s PASSED\n" "false";
 		return 0;
 	}
 }
@@ -38,10 +38,10 @@ fsleep() {
 		t=$((e - s));
 		[ "${t}" -eq 1 ];
 	} && {
-		printf "./sleep PASSED...\n";
+		printf "%-15s PASSED\n" "sleep";
 		return 0;
 	} || {
-		printf "./sleep FAILED...\n";
+		printf "%-15s FAILED\n" "sleep";
 		return 4;
 	}
 }
@@ -50,10 +50,10 @@ fecho() {
     z="hack_the_world"
     x=$(./echo "hack_the_world")
     [ "${x}" = "${z}" ] && {
-		printf "./echo PASSED...\n";
+		printf "%-15s PASSED\n" "echo";
 		return 0;
 	} || {
-		printf "./echo FAILED...\ngot '%s'\nexpected '%s'\n" "${x}" "${z}";
+		printf "%-15s FAILED\ngot '%s'\nexpected '%s'\n" "echo" "${x}" "${z}";
 		return 5;
 	}
 }
@@ -64,11 +64,11 @@ fcat() {
 	printf "%s\n" "${e}" > "${f}"
 	o=$(./cat "${f}")
 	[ "${o}" = "${e}" ] && {
-		printf "./cat PASSED...\n";
+		printf "%-15s PASSED\n" "cat";
 		rm -f "${f}";
 		return 0;
 	} || {
-		printf "./cat FAILED...\ngot '%s'\nexpected '%s'\n" "${o}" "${e}";
+		printf "%-15s FAILED...\ngot '%s'\nexpected '%s'\n" "cat" "${o}" "${e}";
 		rm -f "${f}";
 		return 6;
 	}
@@ -78,11 +78,11 @@ fbridge() {
 	./bridge 20 > /tmp/q 2>&1 & p="${!}"
 	wait "${p}"
 	[ "$(cat /tmp/q)" -eq "${p}" ] && {
-		printf "./bridge PASSED...\n";
+		printf "%-15s PASSED\n" "bridge";
 		rm /tmp/q;
 		return 0;
 	} || {
-		printf "./bridge FAILED...\n";
+		printf "%-15s FAILED\n" "bridge";
 		rm /tmp/q;
 		return 7;
 	}
@@ -92,20 +92,21 @@ ftty() {
 	z=$(command -v ./tty 2>/dev/null)
 	x=$(command -v tty 2>/dev/null)
 	[ "$( "${z}" )" = "$( "${x}" )" ] && {
-		printf "./tty PASSED...\n";
+		printf "%-15s PASSED\n" "tty";
 		return 0;
 	} || {
-		printf "./tty FAILED...\n";
+		printf "%-15s FAILED\n" "tty";
 		return 8;
 	}
 }
 
 fsync() {
-	strace ./sync 2>&1 | grep -s "sync()" >/dev/null && {
-		printf "./sync PASSED...\n";
+#	strace ./sync 2>&1 | grep -s "sync()" >/dev/null && {
+	strace ./sync 2>&1 | grep -v "proot warning: ptrace request 'PTRACE_???' not supported yet" | grep -q "sync()" >/dev/null && {
+		printf "%-15s PASSED\n" "sync";
 		return 0;
 	} || {
-		printf "./sync FAILED...\n";
+		printf "%-15s FAILED\n" "sync";
 		return 9;
 	}
 }
@@ -120,11 +121,11 @@ fcrt0() {
 	./main arg1 arg2
 	RET=$(echo ${?})
 	[ "${RET}" -eq 3 ] && {
-		printf "crt0 PASSED...\n";
+		printf "%-15s PASSED\n" "crt0";
 		rm "${MAIN}" crt0.o main.o main
 		return 0;
 	} || {
-		printf "crt0 FAILED...\n";
+		printf "%-15s FAILED\n" "crt0";
 		rm "${MAIN}" crt0.o main.o main
 		return 10;
 	}

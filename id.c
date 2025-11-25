@@ -74,7 +74,7 @@ static void r(const char *c,const char *d) {
 	j('\n');
 }
 
-int _start() {
+int _ep() {
 	int s;
 	char **w;
 	unsigned int q=0,n=0,s_var=0,g=0;

@@ -79,7 +79,7 @@ test_crt0: test_crt0.c
 id: id.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -static -nostdlib -fno-stack-protector -Wl,-e,_start -o $@ $<; \
+			$(CC) -static -nostdlib -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \

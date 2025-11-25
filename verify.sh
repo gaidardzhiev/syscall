@@ -1,7 +1,7 @@
 #!/bin/sh
 
 fmake() {
-	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; [ -f sync ]; } && {
+	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; [ -f sync ]; [ -f clear ]; } && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {
@@ -131,8 +131,18 @@ fcrt0() {
 	}
 }
 
+fclear() {
+	strace ./clear 2>&1 | grep -q "write(1" >/dev/null && {
+		printf "%-15s PASSED\n" "clear";
+		return 0;
+	} || {
+		printf "%-15s FAILED\n" "clear";
+		return 11;
+	}
+}
+
 #TODO: fshell()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

@@ -30,6 +30,7 @@ The tools include:
 
 - `id.c` - print user, group and system identity by invoking only kernel syscalls directly with ARM EABI inline assembly, bypassing all standard C library functions
 
+- `clear.c` - clear the terminal screen by writing `ANSI` escape sequences directly to stdout using raw `Linux` syscalls with inline assembly bypassing `libc` entirely
 
 ---
 

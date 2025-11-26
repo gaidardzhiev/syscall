@@ -2,7 +2,7 @@ AS=as
 CC=gcc
 CROSS=arm-linux-gnueabihf-gcc
 CFL=-march=armv8-a -marm -std=c99
-BIN=cat echo sleep true false bridge tty sync shell test_crt0 id clear touch
+BIN=cat echo sleep true false bridge tty sync shell test_crt0 id clear
 ARCH=$(shell uname -m)
 
 all: $(BIN)

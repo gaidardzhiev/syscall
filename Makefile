@@ -101,20 +101,6 @@ clear: clear.c
 			;; \
 	esac
 
-touch: touch.c
-	@case $(ARCH) in \
-		armv8l) \
-			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
-			;; \
-		x86_64) \
-			$(CROSS) $(CFL) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
-			;; \
-		*) \
-			printf "unsupported architecture $(ARCH)\n"; \
-			exit 1; \
-			;; \
-	esac
-
 
 $(filter-out false true sync shell test_crt0 id clear touch,$(BIN)): %: %.c
 	@case $(ARCH) in \

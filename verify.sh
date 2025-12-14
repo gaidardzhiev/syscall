@@ -142,6 +142,7 @@ fclear() {
 }
 
 #TODO: fshell()
+#TODO: fpwd()
 
 { fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear; r="${?}"; } || exit 1
 

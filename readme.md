@@ -32,6 +32,8 @@ The tools include:
 
 - `clear.c` - clear the terminal screen by writing `ANSI` escape sequences directly to stdout using raw `Linux` syscalls with inline assembly bypassing `libc` entirely
 
+- `pwd.c` - print current dir from kernel with raw arm syscall no `libc` crap (straight `svc #0` `getcwd(183)`, `4k buf`, `strlen`, `dump stdout`, pure `r7` voodoo)
+
 ---
 
 ## Motivation

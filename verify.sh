@@ -144,7 +144,6 @@ fclear() {
 fpwd() {
 	x=$(./pwd 2>/dev/null)
 	y=$(pwd 2>/dev/null)
-#	[ "$( "${x}" )" = "$( "${z}" )" ] && {
 	[ "${x}" = "${y}" ] && {
 		printf "%-15s PASSED\n" "pwd";
 		return 0;
@@ -155,7 +154,6 @@ fpwd() {
 }
 
 #TODO: fshell()
-#TODO: fpwd()
 
 { fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd; r="${?}"; } || exit 1
 

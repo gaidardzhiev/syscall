@@ -122,7 +122,7 @@ fcrt0() {
 	ret=$(echo ${?})
 	[ "${ret}" -eq 3 ] && {
 		printf "%-15s PASSED\n" "crt0";
-		rm "${ret}" crt0.o main.o main
+		rm "${main}" crt0.o main.o main
 		return 0;
 	} || {
 		printf "%-15s FAILED\n" "crt0";

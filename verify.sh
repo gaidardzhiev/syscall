@@ -1,7 +1,7 @@
 #!/bin/sh
 
 fmake() {
-	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; [ -f sync ]; [ -f clear ]; } && {
+	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; [ -f sync ]; [ -f clear ]; [ -f pwd ]; } && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {
@@ -112,21 +112,21 @@ fsync() {
 }
 
 fcrt0() {
-	MAIN="/tmp/main.c"
-	touch "${MAIN}"
-	printf "int main(int argc, char **argv){return argc;}" > "${MAIN}"
+	main="/tmp/main.c"
+	touch "${main}"
+	printf "int main(int argc, char **argv){return argc;}" > "${main}"
 	as -o crt0.o crt0.s
-	gcc -c -o main.o "${MAIN}"
+	gcc -c -o main.o "${main}"
 	gcc -static -nostdlib -e _start -o main crt0.o main.o
 	./main arg1 arg2
-	RET=$(echo ${?})
-	[ "${RET}" -eq 3 ] && {
+	ret=$(echo ${?})
+	[ "${ret}" -eq 3 ] && {
 		printf "%-15s PASSED\n" "crt0";
-		rm "${MAIN}" crt0.o main.o main
+		rm "${ret}" crt0.o main.o main
 		return 0;
 	} || {
 		printf "%-15s FAILED\n" "crt0";
-		rm "${MAIN}" crt0.o main.o main
+		rm "${main}" crt0.o main.o main
 		return 10;
 	}
 }
@@ -141,9 +141,22 @@ fclear() {
 	}
 }
 
+fpwd() {
+	x=$(./pwd 2>/dev/null)
+	y=$(pwd 2>/dev/null)
+#	[ "$( "${x}" )" = "$( "${z}" )" ] && {
+	[ "${x}" = "${y}" ] && {
+		printf "%-15s PASSED\n" "pwd";
+		return 0;
+	} || {
+		printf "%-15s FAILED\n" "pwd";
+		return 12;
+	} 
+}
+
 #TODO: fshell()
 #TODO: fpwd()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

@@ -11,10 +11,10 @@ struct T {
 };
 
 int c(const struct T *d, struct T *e) {
-	register const struct T *f __asm__("r0") = d;
-	register struct T *g __asm__("r1") = e;
-	register int h __asm__("r7") = 162;
-	__asm__ volatile (
+	register const struct T *f asm("r0") = d;
+	register struct T *g asm("r1") = e;
+	register int h asm("r7") = 162;
+	asm volatile (
 		"svc 0\n"
 		: "+r"(f)
 		: "r"(g), "r"(h)
@@ -44,11 +44,11 @@ void p(const char *q) {
 	const char *r = q;
 	int s = 0;
 	while (r[s]) s++;
-	register int t __asm__("r0") = 2;
-	register const char *u __asm__("r1") = q;
-	register int v __asm__("r2") = s;
-	register int w __asm__("r7") = 4;
-	__asm__ volatile (
+	register int t asm("r0") = 2;
+	register const char *u asm("r1") = q;
+	register int v asm("r2") = s;
+	register int w asm("r7") = 4;
+	asm volatile (
 		"svc 0\n"
 		:
 		: "r"(t), "r"(u), "r"(v), "r"(w)

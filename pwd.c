@@ -6,7 +6,7 @@
 void _ep() {
 	char b[4096];
 	long ret;
-	__asm__ volatile (
+	asm volatile (
 		"mov r7, %[g]\n"
 		"mov r0, %[b]\n"
 		"mov r1, %[s]\n"
@@ -18,7 +18,7 @@ void _ep() {
 	);
 	if (ret < 0) {
 		const char *er = "error\n";
-		__asm__ volatile (
+		asm volatile (
 			"mov r7, %[w]\n"
 			"mov r0, #2\n"
 			"mov r1, %[m]\n"
@@ -28,7 +28,7 @@ void _ep() {
 			: [w] "I" (4), [m] "r" (er)
 			: "r0", "r1", "r2", "r7", "memory"
 		);
-		__asm__ volatile (
+		asm volatile (
 			"mov r7, %[e]\n"
 			"mov r0, #1\n"
 			"svc #0\n"
@@ -40,7 +40,7 @@ void _ep() {
 	char *p = b;
 	while (*p) p++;
 	long len = p - b;
-	__asm__ volatile (
+	asm volatile (
 		"mov r7, %[w]\n"
 		"mov r0, #1\n"
 		"mov r1, %[b]\n"
@@ -51,7 +51,7 @@ void _ep() {
 		: "r0", "r1", "r2", "r7", "memory"
 	);
 	const char nl = '\n';
-	__asm__ volatile (
+	asm volatile (
 		"mov r7, %[w]\n"
 		"mov r0, #1\n"
 		"mov r1, %[nl]\n"
@@ -61,7 +61,7 @@ void _ep() {
 		: [w] "I" (4), [nl] "r" (&nl)
 		: "r0", "r1", "r2", "r7", "memory"
 	);
-	__asm__ volatile (
+	asm volatile (
 		"mov r7, %[e]\n"
 		"mov r0, #0\n"
 		"svc #0\n"

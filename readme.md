@@ -34,6 +34,8 @@ The tools include:
 
 - `pwd.c` - print current dir from kernel with raw arm syscall no `libc` crap (straight `svc #0` `getcwd(183)`, `4k buf`, `strlen`, `dump stdout`, pure `r7` voodoo)
 
+- `uname.c` - print kernel `utsname` via raw arm `swi #0` syscall(122), no `libc` crutches
+
 ---
 
 ## Motivation

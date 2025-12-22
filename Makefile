@@ -52,7 +52,7 @@ sync: sync.c
 shell: shell.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -nostdlib -static -fno-stack-protector -o $@ $<; \
+			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		x86_64) \
 			$(CROSS) $(CFL) -nostdlib -static -fno-stack-protector -o $@ $<; \

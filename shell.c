@@ -6,7 +6,7 @@
 #define I 0
 #define O 1
 
-void _start() {
+void _ep() {
 	char b[512];
 	char *x[64];
 	int l;

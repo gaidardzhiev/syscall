@@ -24,7 +24,7 @@ The tools include:
 
 - `tty.c` - print the file name of the terminal connected to standard input using inline assembly
 
-- `shell.c` - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly ~~~(commands must be given as absolute paths)~~~
+- `shell.c` - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly ~~(commands must be given as absolute paths)~~
 
 - `crt0.s` - minimal armv8l 32bit assembly startup code that initializes the process by extracting `argc` and `argv` from the stack, calls `main()` and then invokes the `exit` syscall with main's return value as the process exit code
 

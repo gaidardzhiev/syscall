@@ -1,7 +1,17 @@
 #!/bin/sh
 
 fmake() {
-	{ [ -f true ]; [ -f false ]; [ -f sleep ]; [ -f echo ]; [ -f cat ]; [ -f sync ]; [ -f clear ]; [ -f pwd ]; } && {
+	{ 
+		[ -f true ];
+		[ -f false ];
+		[ -f sleep ];
+		[ -f echo ];
+		[ -f cat ];
+		[ -f sync ];
+		[ -f clear ];
+		[ -f pwd ];
+		[ -f uname ];
+	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
 		} || {
@@ -153,8 +163,22 @@ fpwd() {
 	} 
 }
 
+funame() {
+	x=$(./uname 2>/dev/null)
+	y=$(uname -a 2>/dev/null)
+	x=$(echo "${x}" | sed 's/[^ ]* *$//')
+	y=$(echo "${y}" | sed 's/[^ ]* *$//')
+	[ "${x}" = "${y}" ] && {
+		printf "%-15s PASSED\n" "uname";
+		return 0;
+	} || {
+		printf "%-15s FAILED\n" "uname";
+		return 13;
+	} 
+}
+
 #TODO: fshell()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

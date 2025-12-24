@@ -1,0 +1,8 @@
+- name: run verify.sh on armv8l
+  run: |
+    docker run --rm --platform linux/arm/v7 
+      -v $(pwd):/work -w /work 
+      alpine:edge sh -c '
+        apk add --no-cache make gcc &&
+        ./verify.sh
+      '

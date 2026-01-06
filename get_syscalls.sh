@@ -13,7 +13,7 @@ command -v cpp > /dev/null || {
 }
 
 cpp -include sys/syscall.h -dM </dev/null \
-       	| sed -n "s/^#define ${p}//p" \
+	| sed -n "s/^#define ${p}//p" \
 	| sort -k1 && exit 0 || {
 		printf "something's wrong in here somewhere...\n" >&2;
 		exit 1;

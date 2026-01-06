@@ -11,6 +11,7 @@ fmake() {
 		[ -f clear ];
 		[ -f pwd ];
 		[ -f uname ];
+		[ -f yes ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -111,7 +112,6 @@ ftty() {
 }
 
 fsync() {
-#	strace ./sync 2>&1 | grep -s "sync()" >/dev/null && {
 	strace ./sync 2>&1 | grep -v "proot warning: ptrace request 'PTRACE_???' not supported yet" | grep -q "sync()" >/dev/null && {
 		printf "%-15s PASSED\n" "sync";
 		return 0;
@@ -177,8 +177,27 @@ funame() {
 	} 
 }
 
+fyes() {
+	t="4"
+	./yes > yes_x.$$ & pid_x="${!}"
+	/usr/bin/yes > yes_y.$$ & pid_y="${!}"
+	sleep $((t - 1))
+	kill "${pid_x}" "${pid_y}" 2>/dev/null
+	wait "${pid_x}" "${pid_y}" 2>/dev/null
+	x=$(head -c 8 yes_x.$$ 2>/dev/null)  
+	y=$(head -c 8 yes_y.$$ 2>/dev/null)
+	rm -f yes_x.$$ yes_y.$$
+	[ "${x}" = "${y}" ] && {
+		printf "%-15s PASSED\n" "yes";
+		return 0;
+	} || {
+		printf "%-15s FAILED\n" "yes";
+			return 14;
+	}
+}
+
 #TODO: fshell()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

@@ -4,6 +4,7 @@ CROSS=arm-linux-gnueabihf-gcc
 CFL=-march=armv8-a -marm -std=c99
 BIN=cat echo sleep true false bridge tty sync shell test_crt0 id clear pwd uname yes
 ARCH=$(shell uname -m)
+START=start.S
 
 all: $(BIN)
 
@@ -132,10 +133,10 @@ uname: uname.c
 yes: yes.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
+			$(CC) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
 			;; \
 		x86_64) \
-			$(CROSS) $(CFL) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
+			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \

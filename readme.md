@@ -36,7 +36,7 @@ The tools include:
 
 - `uname.c` - print kernel `utsname` via raw arm `swi #0` syscall(122), no `libc` crutches
 
-- `yes.c` - print string infinitely to stdout via raw arm `swi #0` write(4) syscall loop, no `libc` crap (argument parsing broken despite r0/r1 capture)
+- `yes.c` - print string infinitely to stdout via raw arm `swi #0` write(4) syscall loop, no `libc` crap ~~(argument parsing broken despite r0/r1 capture)~~
 
 ---
 

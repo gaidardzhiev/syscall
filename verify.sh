@@ -184,15 +184,15 @@ fyes() {
 	sleep $((t - 1))
 	kill "${pid_x}" "${pid_y}" 2>/dev/null
 	wait "${pid_x}" "${pid_y}" 2>/dev/null
-	x=$(head -c 8 yes_x.$$ 2>/dev/null)  
-	y=$(head -c 8 yes_y.$$ 2>/dev/null)
+	x=$(grep -o 'y' yes_x.$$ | head -8 | tr -d '\n')
+	y=$(grep -o 'y' yes_y.$$ | head -8 | tr -d '\n')
 	rm -f yes_x.$$ yes_y.$$
-	[ "${x}" = "${y}" ] && {
+	[ "$x" = "$y" ] && {
 		printf "%-15s PASSED\n" "yes";
-		return 0;
+		return 0
 	} || {
 		printf "%-15s FAILED\n" "yes";
-			return 14;
+		return 14
 	}
 }
 

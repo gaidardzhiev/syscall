@@ -10,7 +10,7 @@ Each tool in this project uses **direct kernel system calls** by crafting syscal
 
 The tools include:
 
-- `cat.c` - concatenate files and print to stdout using low level system calls via `syscall()` provided by `glibc`
+- `cat.c` - concatenate files and print to stdout using pure raw ARM swi #0 syscalls in r7/r0-r2 registers ~~low level system calls via `syscall()` provided by `glibc`~~
 
 - `echo.c` - write arguments to stdout using low level system calls bypassing `libc` via direct svc instructions to the kernel
 

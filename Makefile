@@ -144,7 +144,22 @@ yes: yes.c
 			;; \
 	esac
 
-$(filter-out false true sync shell test_crt0 id clear touch pwd uname yes,$(BIN)): %: %.c
+cat: cat.c
+	@case $(ARCH) in \
+		armv8l) \
+			$(CC) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
+			;; \
+		x86_64) \
+			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
+			;; \
+		*) \
+			printf "unsupported architecture $(ARCH)\n"; \
+			exit 1; \
+			;; \
+	esac
+
+
+$(filter-out false true sync shell test_crt0 id clear touch pwd uname yes cat,$(BIN)): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
 			$(CC) -s -static -o $@ $<; \

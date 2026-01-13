@@ -3,33 +3,46 @@
  * Licensed under the GPL-3.0-only
  */
 
-#include <unistd.h>
-#include <string.h>
-
-void f(const char *v) {
-	size_t n = strlen(v);
-	int d = STDOUT_FILENO;
-	const char *m = v;
-	size_t c = n;
-	int l = 4;
-	asm volatile(
-		"mov r7, %[o]\n\t"
-		"mov r0, %[d]\n\t"
-		"mov r1, %[m]\n\t"
-		"mov r2, %[c]\n\t"
-		"svc #0"
-		:
-		: [d] "r"(d), [m] "r"(m), [c] "r"(c), [o] "r"(l)
-		: "r0", "r1", "r2", "r7", "memory"
-	);
+void fw(int nr, void *z, void *x, int y) {
+	register int r7 asm("r7") = nr;
+	register void *r0 asm("r0") = z;
+	register void *r1 asm("r1") = x;
+	register int r2 asm("r2") = y;
+	asm volatile ("svc #0" : "=r" (r0) : "r" (r7), "r" (r0), "r" (r1), "r" (r2) : "memory");
 }
 
-int main(int z, char **x) {
-	if(z < 2) return 1;
-	for(int i = 1; i < z; i++) {
-		f(x[i]);
-		if(i < z-1) f(" ");
+void _ep() {
+	int p;
+	char **q;
+	asm volatile (
+		"mov %0, r0\n\t"
+		"mov %1, r1\n\t"
+		: "=r"(p), "=r"(q)
+		:
+		: "memory"
+	);
+	if (p < 2) {
+		fw(1, (void*)0, 0, 0);
+		return;
 	}
-	f("\n");
-	return 0;
+	int i;
+	for (i = 1; i < p; i++) {
+		const char *l = q[i];
+		char b[256];
+		int j = 0, k = 0;
+		while (j < 255 && l[j] != '\0') {
+			if (l[j] == '\\' && l[j+1] == 'n') {
+				b[k++] = '\n';
+				j += 2;
+			} else {
+				b[k++] = l[j++];
+			}
+		}
+		fw(4, (void*)1, b, k);
+		if (i < p - 1) {
+			fw(4, (void*)1, " ", 1);
+		}
+	}
+	fw(4, (void*)1, "\n", 1);
+	fw(1, (void*)0, 0, 0);
 }

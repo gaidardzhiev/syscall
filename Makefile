@@ -133,10 +133,10 @@ uname: uname.c
 yes: yes.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
+			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
-			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
+			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \
@@ -147,10 +147,10 @@ yes: yes.c
 cat: cat.c
 	@case $(ARCH) in \
 		armv8l) \
-			$(CC) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
+			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
-			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) $< -o $@; \
+			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		*) \
 			printf "unsupported architecture $(ARCH)\n"; \
@@ -158,8 +158,21 @@ cat: cat.c
 			;; \
 	esac
 
+echo: echo.c
+	@case $(ARCH) in \
+		armv8l) \
+			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
+			;; \
+		x86_64) \
+			$(CC) $(CFL) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
+			;; \
+		*) \
+			printf "unsupported architecture $(ARCH)\n"; \
+			exit 1; \
+			;; \
+	esac
 
-$(filter-out false true sync shell test_crt0 id clear touch pwd uname yes cat,$(BIN)): %: %.c
+$(filter-out false true sync shell test_crt0 id clear touch pwd uname yes cat echo,$(BIN)): %: %.c
 	@case $(ARCH) in \
 		armv8l) \
 			$(CC) -s -static -o $@ $<; \

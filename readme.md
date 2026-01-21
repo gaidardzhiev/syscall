@@ -38,6 +38,8 @@ The tools include:
 
 - `yes.c` - print string infinitely to stdout via raw arm `swi #0` write(4) syscall loop, no `libc` crap ~~(argument parsing broken despite r0/r1 capture)~~
 
+- `wc.c` - print newline, word, and byte counts for each file using pure raw kernel syscalls
+
 ---
 
 ## Motivation

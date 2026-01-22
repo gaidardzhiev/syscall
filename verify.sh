@@ -12,6 +12,7 @@ fmake() {
 		[ -f pwd ];
 		[ -f uname ];
 		[ -f yes ];
+		[ -f wc ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -196,8 +197,20 @@ fyes() {
 	}
 }
 
+fwc() {
+	x=$(./wc wc.c 2>/dev/null | tr -s ' ' | xargs)
+	y=$(wc wc.c 2>/dev/null | tr -s ' ' | xargs)
+	[ "${x}" = "${y}" ] && {
+		printf "%-15s PASSED\n" "wc";
+		return 0;
+	} || {
+		printf "%-15s FAILED\n" "wc";
+		return 15;
+	} 
+}
+
 #TODO: fshell()
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

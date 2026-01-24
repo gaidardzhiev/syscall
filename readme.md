@@ -61,7 +61,7 @@ This project is provided under the GPL3 License.
 
 This project includes a comprehensive verification suite (`verify.sh`) that rigorously tests each utility's functional correctness against standard `*nix` behavior. Following the minimalist philosophy, verification eschews complex frameworks for a simple POSIX shell script that compiles on demand, executes precise behavioral tests, and reports `PASS`/`FAIL` status with diagnostic output.
 
-The suite embodies the `*nix` tradition of **do one thing well:** each test function isolates a single observable property, exit codes, output fidelity, timing, syscall traces and directly comparing them against reference implementations or kernel truths. A wise man once observed "Testing shows the presence, not the absence of bugs." yet this approach catches the essential deviations from expected behavior.
+The suite embodies the `*nix` tradition of **do one thing well:** each test function isolates a single observable property (exit codes, output fidelity, timing, syscall traces) and performs a direct comparison against reference implementations or kernel truths. A wise man once observed "Testing shows the presence, not the absence of bugs." yet this approach catches the essential deviations from expected behavior.
 
 Key verification principles:
 - **Behavioral equivalence**: Each tools `stdout`, `stderr` and `exit` status are compared against system equivalents `[ "${x}" = "${y}" ] && 0 || 1`

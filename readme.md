@@ -70,3 +70,7 @@ Key verification principles:
 - **Self contained**: Builds missing binaries via `make`, cleans temporaries, portable POSIX shell syntax.
 
 Just run `./verify.sh` to validate the purity.
+
+## Get syscalls
+
+The `get_syscalls.sh` script uses `cpp -dM` to dump all preprocessor macros from `sys/syscall.h`. It detects the platform prefix (`__NR_` on Linux, `SYS_` elsewhere) via `uname`, then `sed` strips the prefix, and `sort` orders alphabetically, printing the result to `stdout`.

@@ -9,6 +9,7 @@
 void _ep() {
 	char b[512];
 	char *x[64];
+	char pb[256];
 	int l;
 	while (1) {
 		asm volatile (
@@ -49,6 +50,37 @@ void _ep() {
 		}
 		x[z] = 0;
 		if (z == 0) continue;
+		if (z > 0 && x[0][0] == 'c' && x[0][1] == 'd' && x[0][2] == 0) {
+			if (z > 1) {
+				asm volatile (
+					"mov r0, %0\n"
+					"mov r7, #12\n"
+					"svc 0\n"
+					:
+					: "r"(x[1])
+					: "r0", "r7", "memory"
+				);
+			}
+			continue;
+		}
+		char *m = x[0];
+		if (m[0] != '/') {
+			const char *e[] = {"/bin/", "/usr/bin/"};
+			int f = 0;
+			for (int i = 0; i < 2; i++) {
+				char *d = pb;
+				const char *y = e[i];
+				while (*y) *d++ = *y++;
+				const char *c = m;
+				while (*c) *d++ = *c++;
+				*d = 0;
+				x[0] = pb;
+				m = pb;
+				f = 1;
+				break;
+			}
+			if (!f) continue;
+		}
 		int t;
 		asm volatile (
 			"mov r7, %1\n"
@@ -66,7 +98,7 @@ void _ep() {
 				"mov r7, %2\n"
 				"svc 0\n"
 				:
-				: "r"(x[0]), "r"(x), "r"(11)
+				: "r"(m), "r"(x), "r"(11)
 				: "r0", "r1", "r2", "r7"
 			);
 			asm volatile (

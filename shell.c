@@ -10,6 +10,7 @@ void _ep() {
 	char b[512];
 	char *x[64];
 	char pb[256];
+	char c[1];
 	int l;
 	while (1) {
 		asm volatile (
@@ -22,20 +23,32 @@ void _ep() {
 			: "r"(O), "r"("root# "), "r"(6), "r"(4)
 			: "r0", "r1", "r2", "r7"
 		);
-		asm volatile (
-			"mov r0, %1\n"
-			"mov r1, %2\n"
-			"mov r2, %3\n"
-			"mov r7, %4\n"
-			"svc 0\n"
-			"mov %0, r0\n"
-			: "=r"(l)
-			: "r"(I), "r"(b), "r"(255), "r"(3)
-			: "r0", "r1", "r2", "r7"
-		);
-		if (l <= 0) break;
-		b[l - 1] = 0;
-		if (b[0] == 'e' && b[1] == 'x' && b[2] == 'i' && b[3] == 't' && (b[4] == 0 || b[4] == ' ')) {
+		l = 0;
+		while (l < 254) {
+			int r;
+			asm volatile (
+				"mov r0, %1\n"
+				"mov r1, %2\n"
+				"mov r2, #1\n"
+				"mov r7, #3\n"
+				"svc 0\n"
+				"mov %0, r0\n"
+				: "=r"(r)
+				: "r"(I), "r"(c)
+				: "r0", "r1", "r2", "r7"
+			);
+			if (r <= 0) {
+				l = -1;
+				break;
+			}
+			if (c[0] == '\n') break;
+			b[l++] = c[0];
+		}
+		b[l] = 0;
+		if (l < 0) break;
+		if (l == 0) continue;
+		if (b[0] == 'e' && b[1] == 'x' && b[2] == 'i' && b[3] == 't'
+		    && (b[4] == 0 || b[4] == ' ')) {
 			break;
 		}
 		int z = 0;
@@ -50,7 +63,7 @@ void _ep() {
 		}
 		x[z] = 0;
 		if (z == 0) continue;
-		if (z > 0 && x[0][0] == 'c' && x[0][1] == 'd' && x[0][2] == 0) {
+		if (x[0][0] == 'c' && x[0][1] == 'd' && x[0][2] == 0) {
 			if (z > 1) {
 				asm volatile (
 					"mov r0, %0\n"
@@ -67,12 +80,13 @@ void _ep() {
 		if (m[0] != '/') {
 			const char *e[] = {"/bin/", "/usr/bin/"};
 			int f = 0;
-			for (int i = 0; i < 2; i++) {
+			int i;
+			for (i = 0; i < 2; i++) {
 				char *d = pb;
 				const char *y = e[i];
 				while (*y) *d++ = *y++;
-				const char *c = m;
-				while (*c) *d++ = *c++;
+				const char *cc = m;
+				while (*cc) *d++ = *cc++;
 				*d = 0;
 				x[0] = pb;
 				m = pb;
@@ -83,11 +97,11 @@ void _ep() {
 		}
 		int t;
 		asm volatile (
-			"mov r7, %1\n"
+			"mov r7, #2\n"
 			"svc 0\n"
 			"mov %0, r0\n"
 			: "=r"(t)
-			: "r"(2)
+			:
 			: "r0", "r7"
 		);
 		if (t == 0) {
@@ -95,20 +109,19 @@ void _ep() {
 				"mov r0, %0\n"
 				"mov r1, %1\n"
 				"mov r2, #0\n"
-				"mov r7, %2\n"
+				"mov r7, #11\n"
 				"svc 0\n"
 				:
-				: "r"(m), "r"(x), "r"(11)
+				: "r"(m), "r"(x)
 				: "r0", "r1", "r2", "r7"
 			);
 			asm volatile (
 				"mov r0, #1\n"
-				"mov r7, %0\n"
+				"mov r7, #1\n"
 				"svc 0\n"
-				:
-				: "r"(1)
-				: "r0", "r7"
+				::: "r0", "r7"
 			);
+			for (;;);
 		} else {
 			int w;
 			asm volatile (
@@ -116,21 +129,20 @@ void _ep() {
 				"mov r1, %2\n"
 				"mov r2, #0\n"
 				"mov r3, #0\n"
-				"mov r7, %3\n"
+				"mov r7, #114\n"
 				"svc 0\n"
 				"mov %0, r0\n"
 				: "=r"(w)
-				: "r"(t), "r"(&w), "r"(114)
+				: "r"(t), "r"(&w)
 				: "r0", "r1", "r2", "r3", "r7"
 			);
 		}
 	}
 	asm volatile (
 		"mov r0, #0\n"
-		"mov r7, %0\n"
+		"mov r7, #1\n"
 		"svc 0\n"
-		:
-		: "r"(1)
-		: "r0", "r7"
+		::: "r0", "r7"
 	);
+	for (;;);
 }

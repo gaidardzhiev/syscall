@@ -13,6 +13,7 @@ fmake() {
 		[ -f uname ];
 		[ -f yes ];
 		[ -f wc ];
+		[ -f shell ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -209,8 +210,26 @@ fwc() {
 	} 
 }
 
-#TODO: fshell()
+fshell() {
+	printf 'exit\n' | ./shell > /dev/null 2>&1
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (exit code)\n" "shell";
+		return 16;
+	}
+	x=$(printf '/bin/echo hack_the_world\nexit\n' | ./shell 2>/dev/null | tr -d '\r' | sed 's/root# //g' | grep -v '^exit$' | grep -v '^$' | head -1)
+	[ "${x}" = "hack_the_world" ] || {
+		printf "%-15s FAILED (exec)\ngot '%s'\n" "shell" "${x}";
+		return 17;
+	}
+	x=$(printf 'cd /tmp\n/bin/pwd\nexit\n' | ./shell 2>/dev/null | tr -d '\r' | sed 's/root# //g' | grep -v '^exit$' | grep -v '^$' | head -1)
+	[ "${x}" = "/tmp" ] || {
+		printf "%-15s FAILED (cd)\ngot '%s'\n" "shell" "${x}";
+		return 18;
+	}
+	printf "%-15s PASSED\n" "shell";
+	return 0;
+}
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

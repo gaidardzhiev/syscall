@@ -40,6 +40,8 @@ The tools include:
 
 - `wc.c` - print newline, word, and byte counts for each file using pure raw kernel syscalls
 
+- `kill.c` - send signals to processes by PID using raw ARM32 `swi #0` syscall(37), supporting `SIGTERM`, `-N`, `-s SIGNAL`, and `-SIGNAME`
+
 ---
 
 ## Motivation

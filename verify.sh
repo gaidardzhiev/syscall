@@ -14,6 +14,7 @@ fmake() {
 		[ -f yes ];
 		[ -f wc ];
 		[ -f shell ];
+		[ -f kill ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -230,6 +231,64 @@ fshell() {
 	return 0;
 }
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell; r="${?}"; } || exit 1
+fkill() {
+	./sleep 60 & p="${!}"
+	./kill "${p}"
+	wait "${p}" 2>/dev/null
+	[ "${?}" -eq 143 ] || {
+		printf "%-15s FAILED (SIGTERM default)\n" "kill";
+		return 19;
+	}
+	./sleep 60 & p="${!}"
+	./kill -9 "${p}"
+	wait "${p}" 2>/dev/null
+	[ "${?}" -eq 137 ] || {
+		printf "%-15s FAILED (-9 shorthand)\n" "kill";
+		return 20;
+	}
+	./sleep 60 & p="${!}"
+	./kill -s 9 "${p}"
+	wait "${p}" 2>/dev/null
+	[ "${?}" -eq 137 ] || {
+		printf "%-15s FAILED (-s numeric)\n" "kill";
+		return 21;
+	}
+	./sleep 60 & p="${!}"
+	./kill -s KILL "${p}"
+	wait "${p}" 2>/dev/null
+	[ "${?}" -eq 137 ] || {
+		printf "%-15s FAILED (-s name)\n" "kill";
+		return 22;
+	}
+	./sleep 60 & p="${!}"
+	./kill -TERM "${p}"
+	wait "${p}" 2>/dev/null
+	[ "${?}" -eq 143 ] || {
+		printf "%-15s FAILED (-SIGNAME shorthand)\n" "kill";
+		return 23;
+	}
+	./sleep 60 & p1="${!}"
+	./sleep 60 & p2="${!}"
+	./kill -9 "${p1}" "${p2}"
+	wait "${p1}" "${p2}" 2>/dev/null
+	[ "${?}" -eq 137 ] || {
+		printf "%-15s FAILED (multiple PIDs)\n" "kill";
+		return 24;
+	}
+	./kill -s DEADBEEF 1 2>/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (bad signal)\n" "kill";
+		return 25;
+	}
+	./kill 2>/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (no args)\n" "kill";
+		return 26;
+	}
+	printf "%-15s PASSED\n" "kill"
+	return 0
+}
+
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

@@ -289,6 +289,126 @@ fkill() {
 	return 0
 }
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill; r="${?}"; } || exit 1
+ftest() {
+	./[ 2>/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (no args)\n" "test"
+		return 27
+	}
+	./[ -z "" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-z empty)\n" "test"
+		return 28
+	}
+	./[ -z "x" ]
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (-z nonempty)\n" "test"
+		return 29
+	}
+	./[ -n "x" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-n nonempty)\n" "test"
+		return 30
+	}
+	./[ -n "" ]
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (-n empty)\n" "test"
+		return 31
+	}
+	./[ "abc" = "abc" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (string =)\n" "test"
+		return 32
+	}
+	./[ "abc" != "xyz" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (string !=)\n" "test"
+		return 33
+	}
+	./[ 42 -eq 42 ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-eq)\n" "test"
+		return 34
+	}
+	./[ 1 -ne 2 ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-ne)\n" "test"
+		return 35
+	}
+	./[ 1 -lt 2 ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-lt)\n" "test"
+		return 36
+	}
+	./[ 2 -le 2 ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-le)\n" "test"
+		return 37
+	}
+	./[ 3 -gt 2 ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-gt)\n" "test"
+		return 38
+	}
+	./[ 2 -ge 2 ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-ge)\n" "test"
+		return 39
+	}
+	./[ -e "/etc/passwd" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-e existing)\n" "test"
+		return 40
+	}
+	./[ -e "/no/such/file" ]
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (-e missing)\n" "test"
+		return 41
+	}
+	./[ -f "/etc/passwd" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-f regular)\n" "test"
+		return 42
+	}
+	./[ -d "/tmp" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-d dir)\n" "test"
+		return 43
+	}
+	./[ -r "/etc/passwd" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-r readable)\n" "test"
+		return 44
+	}
+	./[ -x "/bin/sh" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-x executable)\n" "test"
+		return 45
+	}
+	./[ ! -f "/tmp" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (! negation)\n" "test"
+		return 46
+	}
+	./[ -f "/etc/passwd" -a -d "/tmp" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-a and)\n" "test"
+		return 47
+	}
+	./[ -f "/no/such" -o -d "/tmp" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-o or)\n" "test"
+		return 48
+	}
+	./[ -f "/etc/passwd" 2>/dev/null
+	[ "${?}" -eq 2 ] || {
+		printf "%-15s FAILED (missing ])\n" "test"
+		return 49
+	}
+	printf "%-15s PASSED\n" "test"
+	return 0
+}
+
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

@@ -42,6 +42,8 @@ The tools include:
 
 - `kill.c` - send signals to processes by PID using raw ARM32 `swi #0` syscall(37), supporting `SIGTERM`, `-N`, `-s SIGNAL`, and `-SIGNAME`
 
+- `test.c` - evaluate POSIX expressions via raw `swi #0` syscalls(4/33/195), supporting string, integer, file tests and logical operators (`!`, `-a`, `-o`, ...), invoked as `test` or `[`
+
 ---
 
 ## Motivation

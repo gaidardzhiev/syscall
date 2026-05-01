@@ -15,6 +15,7 @@ fmake() {
 		[ -f wc ];
 		[ -f shell ];
 		[ -f kill ];
+		[ -f mkdir ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -292,123 +293,180 @@ fkill() {
 ftest() {
 	./[ 2>/dev/null
 	[ "${?}" -eq 1 ] || {
-		printf "%-15s FAILED (no args)\n" "test"
-		return 27
+		printf "%-15s FAILED (no args)\n" "test";
+		return 27;
 	}
 	./[ -z "" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-z empty)\n" "test"
-		return 28
+		printf "%-15s FAILED (-z empty)\n" "test";
+		return 28;
 	}
 	./[ -z "x" ]
 	[ "${?}" -eq 1 ] || {
-		printf "%-15s FAILED (-z nonempty)\n" "test"
-		return 29
+		printf "%-15s FAILED (-z nonempty)\n" "test";
+		return 29;
 	}
 	./[ -n "x" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-n nonempty)\n" "test"
-		return 30
+		printf "%-15s FAILED (-n nonempty)\n" "test";
+		return 30;
 	}
 	./[ -n "" ]
 	[ "${?}" -eq 1 ] || {
-		printf "%-15s FAILED (-n empty)\n" "test"
-		return 31
+		printf "%-15s FAILED (-n empty)\n" "test";
+		return 31;
 	}
 	./[ "abc" = "abc" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (string =)\n" "test"
-		return 32
+		printf "%-15s FAILED (string =)\n" "test";
+		return 32;
 	}
 	./[ "abc" != "xyz" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (string !=)\n" "test"
-		return 33
+		printf "%-15s FAILED (string !=)\n" "test";
+		return 33;
 	}
 	./[ 42 -eq 42 ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-eq)\n" "test"
+		printf "%-15s FAILED (-eq)\n" "test";
 		return 34
 	}
 	./[ 1 -ne 2 ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-ne)\n" "test"
-		return 35
+		printf "%-15s FAILED (-ne)\n" "test";
+		return 35;
 	}
 	./[ 1 -lt 2 ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-lt)\n" "test"
-		return 36
+		printf "%-15s FAILED (-lt)\n" "test";
+		return 36;
 	}
 	./[ 2 -le 2 ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-le)\n" "test"
-		return 37
+		printf "%-15s FAILED (-le)\n" "test";
+		return 37;
 	}
 	./[ 3 -gt 2 ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-gt)\n" "test"
-		return 38
+		printf "%-15s FAILED (-gt)\n" "test";
+		return 38;
 	}
 	./[ 2 -ge 2 ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-ge)\n" "test"
-		return 39
+		printf "%-15s FAILED (-ge)\n" "test";
+		return 39;
 	}
 	./[ -e "/etc/passwd" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-e existing)\n" "test"
-		return 40
+		printf "%-15s FAILED (-e existing)\n" "test";
+		return 40;
 	}
 	./[ -e "/no/such/file" ]
 	[ "${?}" -eq 1 ] || {
-		printf "%-15s FAILED (-e missing)\n" "test"
-		return 41
+		printf "%-15s FAILED (-e missing)\n" "test";
+		return 41;
 	}
 	./[ -f "/etc/passwd" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-f regular)\n" "test"
-		return 42
+		printf "%-15s FAILED (-f regular)\n" "test";
+		return 42;
 	}
 	./[ -d "/tmp" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-d dir)\n" "test"
-		return 43
+		printf "%-15s FAILED (-d dir)\n" "test";
+		return 43;
 	}
 	./[ -r "/etc/passwd" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-r readable)\n" "test"
-		return 44
+		printf "%-15s FAILED (-r readable)\n" "test";
+		return 44;
 	}
 	./[ -x "/bin/sh" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-x executable)\n" "test"
-		return 45
+		printf "%-15s FAILED (-x executable)\n" "test";
+		return 45;
 	}
 	./[ ! -f "/tmp" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (! negation)\n" "test"
-		return 46
+		printf "%-15s FAILED (! negation)\n" "test";
+		return 46;
 	}
 	./[ -f "/etc/passwd" -a -d "/tmp" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-a and)\n" "test"
-		return 47
+		printf "%-15s FAILED (-a and)\n" "test";
+		return 47;
 	}
 	./[ -f "/no/such" -o -d "/tmp" ]
 	[ "${?}" -eq 0 ] || {
-		printf "%-15s FAILED (-o or)\n" "test"
-		return 48
+		printf "%-15s FAILED (-o or)\n" "test";
+		return 48;
 	}
 	./[ -f "/etc/passwd" 2>/dev/null
 	[ "${?}" -eq 2 ] || {
-		printf "%-15s FAILED (missing ])\n" "test"
-		return 49
+		printf "%-15s FAILED (missing ])\n" "test";
+		return 49;
 	}
 	printf "%-15s PASSED\n" "test"
 	return 0
 }
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest; r="${?}"; } || exit 1
+fmkdir() {
+	rmdir ./syscall_test_dir ./syscall_test_mode ./syscall_a ./syscall_b ./syscall_c 2>/dev/null
+	./mkdir 2>/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (no args)\n" "mkdir";
+		return 50;
+	}
+	./mkdir ./syscall_test_dir
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (create dir)\n" "mkdir";
+		return 51;
+	}
+	./[ -d "./syscall_test_dir" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (dir exists)\n" "mkdir";
+		return 52;
+	}
+	./mkdir ./syscall_test_dir 2>/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (already exists)\n" "mkdir";
+		return 53;
+	}
+	./mkdir -m 0700 ./syscall_test_mode
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-m mode)\n" "mkdir";
+		return 54;
+	}
+	./[ -d "./syscall_test_mode" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (-m dir exists)\n" "mkdir";
+		return 55;
+	}
+	./mkdir ./syscall_a ./syscall_b ./syscall_c
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (multiple paths)\n" "mkdir";
+		return 56;
+	}
+	./[ -d "./syscall_a" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (multi path a)\n" "mkdir";
+		return 57;
+	}
+	./[ -d "./syscall_b" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (multi path b)\n" "mkdir";
+		return 58;
+	}
+	./[ -d "./syscall_c" ]
+	[ "${?}" -eq 0 ] || {
+		printf "%-15s FAILED (multi path c)\n" "mkdir";
+		return 59;
+	}
+	rmdir ./syscall_test_dir ./syscall_test_mode ./syscall_a ./syscall_b ./syscall_c
+	printf "%-15s PASSED\n" "mkdir";
+	return 0;
+}
+
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

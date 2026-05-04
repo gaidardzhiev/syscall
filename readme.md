@@ -46,7 +46,7 @@ The tools include:
 
 - `mkdir.c` - create directories via raw ARM32 `swi #0` syscall(39), supporting mode and multiple paths
 
----
+- `expr.c` - evaluate POSIX expressions via raw `swi #0` syscalls(4/1), supporting arithmetic (`+ - * / %`), comparison, boolean (`| &`) and string operations (`length`, `substr`, `index`), with portable shift subtract integer division
 
 ## Motivation
 
@@ -54,14 +54,6 @@ The tools include:
 - Learn low level Linux ARMV8L syscall conventions.
 - Understand mixing inline assembly with C for syscall invocation.
 - Create minimalist tools demonstrating syscall usage, process lifecycle, and shell basics...
-
----
-
-## License
-
-This project is provided under the GPL3 License.
-
----
 
 ## Verification
 
@@ -80,3 +72,7 @@ Just run `./verify.sh` to validate the purity.
 ## Get syscalls
 
 The `get_syscalls.sh` script uses `cpp -dM` to dump all preprocessor macros from `sys/syscall.h`. It detects the platform prefix (`__NR_` on Linux, `SYS_` elsewhere) via `uname`, then `sed` strips the prefix, and `sort` orders alphabetically, printing the result to `stdout`.
+
+## License
+
+Copyright (C) 2025-2026 Ivan Gaydardzhiev. Licensed under GPL-3.0-only; see [COPYING](./COPYING) for details.

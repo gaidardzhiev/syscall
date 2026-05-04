@@ -52,7 +52,7 @@ The tools include:
 
 ## Motivation
 
-The kernel interface is always there, one `swi #0` away. Libc is just a polite suggestion. This project strips that layer off to see what's underneath, how processes start, how the kernel moves bytes, how a shell actually works when you build one yourself from `fork(2)` and `execve(11)` up. Every tool here is a worked example in that philosophy.
+The kernel interface is always there, one `swi #0` away. Libc is just a polite suggestion. This project strips that layer off to see what's underneath, how processes start, how the kernel moves bytes, how a shell actually works when you build one yourself from `fork(2)` and `execve(11)` up...
 
 ## Verification
 

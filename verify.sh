@@ -16,6 +16,7 @@ fmake() {
 		[ -f shell ];
 		[ -f kill ];
 		[ -f mkdir ];
+		[ -f expr ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -467,6 +468,137 @@ fmkdir() {
 	return 0;
 }
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir; r="${?}"; } || exit 1
+fexpr() {
+	./expr 2>/dev/null
+	[ "${?}" -eq 2 ] || {
+		printf "%-15s FAILED (no args)\n" "expr";
+		return 60;
+	}
+	[ "$(./expr 1 + 1)" = "2" ] || {
+		printf "%-15s FAILED (add)\n" "expr";
+		return 61;
+	}
+	[ "$(./expr 5 - 3)" = "2" ] || {
+		printf "%-15s FAILED (sub)\n" "expr";
+		return 62;
+	}
+	[ "$(./expr 3 \* 4)" = "12" ] || {
+		printf "%-15s FAILED (mul)\n" "expr";
+		return 63;
+	}
+	[ "$(./expr 10 / 3)" = "3" ] || {
+		printf "%-15s FAILED (div)\n" "expr";
+		return 64;
+	}
+	[ "$(./expr 10 % 3)" = "1" ] || {
+		printf "%-15s FAILED (mod)\n" "expr";
+		return 65;
+	}
+	./expr 5 / 0 2>/dev/null
+	[ "${?}" -eq 2 ] || {
+		printf "%-15s FAILED (div zero)\n" "expr";
+		return 66;
+	}
+	[ "$(./expr 2 = 2)" = "1" ] || {
+		printf "%-15s FAILED (eq true)\n" "expr";
+		return 67;
+	}
+	./expr 2 = 3 >/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (eq false)\n" "expr";
+		return 68;
+	}
+	[ "$(./expr 2 != 3)" = "1" ] || {
+		printf "%-15s FAILED (ne true)\n" "expr";
+		return 69;
+	}
+	[ "$(./expr 1 \< 2)" = "1" ] || {
+		printf "%-15s FAILED (lt true)\n" "expr";
+		return 70;
+	}
+	./expr 2 \< 1 >/dev/null
+	[ "${?}" -eq 1 ] || {
+		printf "%-15s FAILED (lt false)\n" "expr";
+		return 71;
+	}
+	[ "$(./expr 2 \<= 2)" = "1" ] || {
+		printf "%-15s FAILED (le true)\n" "expr";
+		return 72;
+	}
+	[ "$(./expr 3 \> 2)" = "1" ] || {
+		printf "%-15s FAILED (gt true)\n" "expr";
+		return 73;
+	}
+	[ "$(./expr 2 \>= 2)" = "1" ] || {
+		printf "%-15s FAILED (ge true)\n" "expr";
+		return 74;
+	}
+	[ "$(./expr 5 \| 0)" = "5" ] || {
+		printf "%-15s FAILED (or lhs)\n" "expr";
+		return 75;
+	}
+	[ "$(./expr 0 \| 7)" = "7" ] || {
+		printf "%-15s FAILED (or rhs)\n" "expr";
+		return 76;
+	}
+	[ "$(./expr 3 \& 4)" = "3" ] || {
+		printf "%-15s FAILED (and true)\n" "expr";
+		return 77;
+	}
+	[ "$(./expr 0 \& 4)" = "0" ] || {
+		printf "%-15s FAILED (and false)\n" "expr";
+		return 78;
+	}
+	[ "$(./expr length hello)" = "5" ] || {
+		printf "%-15s FAILED (length)\n" "expr";
+		return 79;
+	}
+	[ "$(./expr length '')" = "0" ] || {
+		printf "%-15s FAILED (length empty)\n" "expr";
+		return 80;
+	}
+	[ "$(./expr substr abcdef 2 3)" = "bcd" ] || {
+		printf "%-15s FAILED (substr)\n" "expr";
+		return 81;
+	}
+	[ "$(./expr substr abcdef 1 1)" = "a" ] || {
+		printf "%-15s FAILED (substr start)\n" "expr";
+		return 82;
+	}
+	[ "$(./expr index abcdef c)" = "3" ] || {
+		printf "%-15s FAILED (index hit)\n" "expr";
+		return 83;
+	}
+	[ "$(./expr index abcdef z)" = "0" ] || {
+		printf "%-15s FAILED (index miss)\n" "expr";
+		return 84;
+	}
+	[ "$(./expr \( 2 + 3 \) \* 4)" = "20" ] || {
+		printf "%-15s FAILED (parens)\n" "expr";
+		return 85;
+	}
+	[ "$(./expr 1 + 2 \* 3)" = "7" ] || {
+		printf "%-15s FAILED (precedence)\n" "expr";
+		return 86;
+	}
+	[ "$(./expr -3 + 1)" = "-2" ] || {
+		printf "%-15s FAILED (negative)\n" "expr";
+		return 87;
+	}
+	./expr foo + 1 2>/dev/null
+	[ "${?}" -eq 2 ] || {
+		printf "%-15s FAILED (non-integer)\n" "expr";
+		return 88;
+	}
+	./expr 1 + 2 3 2>/dev/null
+	[ "${?}" -eq 2 ] || {
+		printf "%-15s FAILED (extra operand)\n" "expr";
+		return 89;
+	}
+	printf "%-15s PASSED\n" "expr"
+	return 0
+}
+
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir && fexpr; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

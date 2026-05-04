@@ -14,35 +14,35 @@ The tools include:
 
 - `cat.c` - concatenate files and print to stdout using pure raw ARM `swi #0` syscalls in `r7/r0-r2` registers ~~low level system calls via `syscall()` provided by `glibc`~~
 
-- `echo.c` - write arguments to stdout using low level system calls bypassing `libc` via direct `svc` instructions to the kernel
+- `echo.c` - write arguments to stdout using low level system calls bypassing `libc` via direct `svc`
 
-- `sleep.c` - suspend execution for a specified number of seconds by directly invoking the `nanosleep` syscall using inline assembly without relying on `libc`
+- `sleep.c` - suspend execution for a specified number of seconds by directly invoking the `nanosleep` syscall
 
-- `false.c` - do nothing unsuccessfully by directly invoking the kernel `exit` syscall with status `1` using inline assembly and bypassing `libc` entirely
+- `false.c` - do nothing unsuccessfully by directly invoking the kernel `exit` syscall with status `1`
 
-- `true.c` - do nothing successfully by directly invoking the kernel `exit` syscall with status `0` using inline assembly and bypassing `libc` entirely
+- `true.c` - do nothing successfully by directly invoking the kernel `exit` syscall with status `0`
 
 - `bridge.c` - bridge between raw syscalls and the POSIX shell allowing scripts to access any syscall by number and arguments
 
-- `tty.c` - print the file name of the terminal connected to standard input using inline assembly
+- `tty.c` - print the file name of the terminal connected to standard input
 
-- `shell.c` - minimalist shell that cycles reading, forking, executing and waiting using only raw syscalls and inline assembly ~~(commands must be given as absolute paths)~~
+- `shell.c` - minimalist shell that cycles reading, forking, executing and waiting ~~(commands must be given as absolute paths)~~
 
 - `crt0.s` - minimal armv8l 32 bit assembly startup code that initializes the process by extracting `argc` and `argv` from the stack, calls `main()` and then invokes the `exit` syscall with main's return value as the process exit code
 
-- `id.c` - print user, group and system identity by invoking only kernel syscalls directly with ARM EABI inline assembly, bypassing all standard C library functions
+- `id.c` - print user, group and system identity by invoking only kernel syscalls
 
-- `clear.c` - clear the terminal screen by writing `ANSI` escape sequences directly to stdout using raw `Linux` syscalls with inline assembly bypassing `libc` entirely
+- `clear.c` - clear the terminal screen by writing `ANSI` escape sequences directly to stdout
 
 - `pwd.c` - print current dir from kernel with raw arm syscall no `libc` crap (straight `svc #0` `getcwd(183)`, `4k buf`, `strlen`, `dump stdout`, pure `r7` voodoo)
 
-- `uname.c` - print kernel `utsname` via raw arm `swi #0` syscall(122), no `libc` crutches
+- `uname.c` - print kernel `utsname` via `swi #0` syscall(122)
 
 - `yes.c` - print string infinitely to stdout via raw arm `swi #0` write(4) syscall loop ~~(argument parsing broken despite r0/r1 capture)~~
 
-- `wc.c` - print newline, word, and byte counts for each file using pure raw kernel syscalls
+- `wc.c` - print newline, word, and byte counts for each file
 
-- `kill.c` - send signals to processes by PID using raw ARM32 `swi #0` syscall(37), supporting `SIGTERM`, `-N`, `-s SIGNAL`, and `-SIGNAME`
+- `kill.c` - send signals to processes by PID using `swi #0` syscall(37), supporting `SIGTERM`, `-N`, `-s SIGNAL`, and `-SIGNAME`
 
 - `test.c` - evaluate POSIX expressions via raw `swi #0` syscalls(4/33/195), supporting string, integer, file tests and logical operators (`!`, `-a`, `-o`, ...), invoked as `[`
 

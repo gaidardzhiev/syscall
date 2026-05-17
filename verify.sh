@@ -17,6 +17,7 @@ fmake() {
 		[ -f kill ];
 		[ -f mkdir ];
 		[ -f expr ];
+		[ -f printf ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -599,6 +600,86 @@ fexpr() {
 	return 0
 }
 
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir && fexpr; r="${?}"; } || exit 1
+fprintf() {
+	[ "$(./printf '%s\n' deadbeef)" = "deadbeef" ] || {
+		printf "%-15s FAILED (string)\n" "printf";
+		return 90;
+	}
+	[ "$(./printf '%d\n' 42)" = "42" ] || {
+		printf "%-15s FAILED (decimal)\n" "printf";
+		return 91;
+	}
+	[ "$(./printf '%d\n' -7)" = "-7" ] || {
+		printf "%-15s FAILED (negative)\n" "printf";
+		return 92;
+	}
+	[ "$(./printf '%05d\n' 42)" = "00042" ] || {
+		printf "%-15s FAILED (zero pad)\n" "printf";
+		return 93;
+	}
+	[ "$(./printf '%-8s|\n' hi)" = "hi      |" ] || {
+		printf "%-15s FAILED (left align)\n" "printf";
+		return 94;
+	}
+	[ "$(./printf '%8s|\n' hi)" = "      hi|" ] || {
+		printf "%-15s FAILED (right align)\n" "printf";
+		return 95;
+	}
+	[ "$(./printf '%x\n' 255)" = "ff" ] || {
+		printf "%-15s FAILED (hex lower)\n" "printf";
+		return 96;
+	}
+	[ "$(./printf '%X\n' 255)" = "FF" ] || {
+		printf "%-15s FAILED (hex upper)\n" "printf";
+		return 97;
+	}
+	[ "$(./printf '%#x\n' 255)" = "0xff" ] || {
+		printf "%-15s FAILED (hex alt)\n" "printf";
+		return 98;
+	}
+	[ "$(./printf '%o\n' 8)" = "10" ] || {
+		printf "%-15s FAILED (octal)\n" "printf";
+		return 99;
+	}
+	[ "$(./printf '%c\n' A)" = "A" ] || {
+		printf "%-15s FAILED (char)\n" "printf";
+		return 100;
+	}
+	[ "$(./printf '%s %s\n' foo bar)" = "foo bar" ] || {
+		printf "%-15s FAILED (two args)\n" "printf";
+		return 101;
+	}
+	[ "$(./printf '%d\n' 1 2 3)" = "$(printf '%d\n%d\n%d\n' 1 2 3)" ] || {
+		printf "%-15s FAILED (repeat fmt)\n" "printf";
+		return 102;
+	}
+	[ "$(./printf 'a\tb\n')" = "$(printf 'a\tb\n')" ] || {
+		printf "%-15s FAILED (tab escape)\n" "printf";
+		return 103;
+	}
+#	[ "$(./printf 'a\\\\b\n')" = 'a\b' ] || {
+	[ "$(./printf 'a\\b\n')" = 'a\b' ] || {
+		printf "%-15s FAILED (backslash)\n" "printf";
+		return 104;
+	}
+	[ "$(./printf '%+d\n' 5)" = "+5" ] || {
+		printf "%-15s FAILED (plus flag)\n" "printf";
+		return 105;
+	}
+	[ "$(./printf '%.3s\n' abcdef)" = "abc" ] || {
+		printf "%-15s FAILED (str precision)\n" "printf";
+		return 106;
+	}
+	[ "$(./printf '%%\n')" = "%" ] || {
+		printf "%-15s FAILED (percent literal)\n" "printf";
+		return 107;
+	}
+	printf "%-15s PASSED\n" "printf"
+	return 0
+}
+
+
+
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir && fexpr && fprintf; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

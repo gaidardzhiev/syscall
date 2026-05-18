@@ -18,6 +18,7 @@ fmake() {
 		[ -f mkdir ];
 		[ -f expr ];
 		[ -f printf ];
+		[ -f ls ];
 	} && {
 			printf "bins exist proceeding with test...\n\n";
 			return 0;
@@ -678,8 +679,44 @@ fprintf() {
 	return 0
 }
 
+fls() {
+	./ls >/dev/null 2>&1 || {
+		printf "%-15s FAILED (basic)\n" "ls";
+		return 110;
+	}
+	./ls . | grep -q ls.c || {
+		printf "%-15s FAILED (lists file)\n" "ls";
+		return 111;
+	}
+	[ -z "$(./ls . | grep '^\.')" ] || {
+		printf "%-15s FAILED (hides dot)\n" "ls";
+		return 112;
+	}
+	./ls -a . | grep -q '^\.' || {
+		printf "%-15s FAILED (-a dot)\n" "ls";
+		return 113;
+	}
+	./ls -l . | grep -q '^[-dl]' || {
+		printf "%-15s FAILED (-l mode)\n" "ls";
+		return 114;
+	}
+	[ "$(./ls /nonexistent 2>/dev/null; echo $?)" != "0" ] || {
+		printf "%-15s FAILED (bad path)\n" "ls";
+		return 115;
+	}
+	mkdir -p /tmp/ls_td && touch /tmp/ls_td/aa && touch /tmp/ls_td/bb
+	[ "$(./ls /tmp/ls_td | head -1)" = "aa" ] || {
+		printf "%-15s FAILED (sorted)\n" "ls";
+		return 116;
+	}
+	[ "$(./ls /tmp/ls_td | wc -l | tr -d ' ')" = "2" ] || {
+		printf "%-15s FAILED (count)\n" "ls";
+		return 117;
+	}
+	printf "%-15s PASSED\n" "ls"
+	return 0
+}
 
-
-{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir && fexpr && fprintf; r="${?}"; } || exit 1
+{ fmake && ftrue && ffalse && fsleep && fecho && fcat && fbridge && ftty && fsync && fcrt0 && fclear && fpwd && funame && fyes && fwc && fshell && fkill && ftest && fmkdir && fexpr && fprintf && fls; r="${?}"; } || exit 1
 
 [ "${r}" -eq 0 ] 2>/dev/null || printf "%s\n" "${r}"

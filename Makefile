@@ -10,7 +10,7 @@ all: $(BIN)
 
 true: true.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		x86_64) \
@@ -24,7 +24,7 @@ true: true.c
 
 false: false.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		x86_64) \
@@ -38,7 +38,7 @@ false: false.c
 
 sync: sync.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -o $@ $< -Wl,-e,_ep; \
 			;; \
 		x86_64) \
@@ -52,7 +52,7 @@ sync: sync.c
 
 shell: shell.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		x86_64) \
@@ -66,7 +66,7 @@ shell: shell.c
 
 test_crt0: test_crt0.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(AS) -o crt0.o crt0.s; \
 			$(CC) -c -o test_crt0.o test_crt0.c; \
 			$(CC) -static -nostdlib -e _start -o test_crt0 crt0.o test_crt0.o; \
@@ -79,7 +79,7 @@ test_crt0: test_crt0.c
 
 id: id.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -static -nostdlib -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		*) \
@@ -90,7 +90,7 @@ id: id.c
 
 clear: clear.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		x86_64) \
@@ -104,7 +104,7 @@ clear: clear.c
 
 pwd: pwd.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		x86_64) \
@@ -118,7 +118,7 @@ pwd: pwd.c
 
 uname: uname.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -Wl,-e,_ep -o $@ $<; \
 			;; \
 		x86_64) \
@@ -132,7 +132,7 @@ uname: uname.c
 
 yes: yes.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -146,7 +146,7 @@ yes: yes.c
 
 cat: cat.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -160,7 +160,7 @@ cat: cat.c
 
 echo: echo.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -174,7 +174,7 @@ echo: echo.c
 
 tty: tty.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -188,7 +188,7 @@ tty: tty.c
 
 sleep: sleep.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -202,7 +202,7 @@ sleep: sleep.c
 
 wc: wc.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -216,7 +216,7 @@ wc: wc.c
 
 kill: kill.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -230,7 +230,7 @@ kill: kill.c
 
 [: test.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -fno-jump-tables $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -244,7 +244,7 @@ kill: kill.c
 
 mkdir: mkdir.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -fno-jump-tables $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -258,7 +258,7 @@ mkdir: mkdir.c
 
 expr: expr.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -fno-jump-tables $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -272,7 +272,7 @@ expr: expr.c
 
 printf: printf.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -fno-jump-tables $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -286,7 +286,7 @@ printf: printf.c
 
 ls: ls.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -nostdlib -static -fno-stack-protector -fno-jump-tables $(START) -o $@ $<; \
 			;; \
 		x86_64) \
@@ -302,7 +302,7 @@ ls: ls.c
 
 $(filter-out false true sync shell test_crt0 id clear touch pwd uname yes cat echo tty sleep wc kill mkdir [ expr printf ls,$(BIN)): %: %.c
 	@case $(ARCH) in \
-		armv8l) \
+		armv7l) \
 			$(CC) -s -static -o $@ $<; \
 			;; \
 		x86_64) \

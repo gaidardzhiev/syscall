@@ -1,8 +1,8 @@
-# Minimalist *nix Utilities Using Raw Syscalls and Inline Assembly (ARMv8l 32-bit)
+# Minimalist *nix Utilities Using Raw Syscalls and Inline Assembly (ARMv7l 32-bit)
 
 Straight kernel calls. No libc. No wrappers. No mercy.
 
-This project implements a collection of classic `*nix` utilities written in C and ARMv8l 32 bit inline assembly that **bypass the C standard library (`libc`)** entirely, invoking system calls directly. The goal of this project is to deeply explore and understand how computers truly operate at the lower level by writing software that interacts directly with the Linux kernel via raw system calls and ARMv8l 32 bit assembly bypassing all high level abstractions such as `libc`. This approach teaches the essential principles of low level programming, reveals how operating systems manage processes and resources, and exemplifies how software **should be programmed** when maximum control, efficiency, and minimal abstraction are required.
+This project implements a collection of classic `*nix` utilities written in C and ARMv7l 32 bit inline assembly that **bypass the C standard library (`libc`)** entirely, invoking system calls directly. The goal of this project is to deeply explore and understand how computers truly operate at the lower level by writing software that interacts directly with the Linux kernel via raw system calls and ARMv7l 32 bit assembly bypassing all high level abstractions such as `libc`. This approach teaches the essential principles of low level programming, reveals how operating systems manage processes and resources, and exemplifies how software **should be programmed** when maximum control, efficiency, and minimal abstraction are required.
 
 ---
 
@@ -28,7 +28,7 @@ The tools include:
 
 - `shell.c` - minimalist shell that cycles reading, forking, executing and waiting ~~(commands must be given as absolute paths)~~
 
-- `crt0.s` - minimal armv8l 32 bit assembly startup code that initializes the process by extracting `argc` and `argv` from the stack, calls `main()` and then invokes the `exit` syscall with main's return value as the process exit code
+- `crt0.s` - minimal armv7l 32 bit assembly startup code that initializes the process by extracting `argc` and `argv` from the stack, calls `main()` and then invokes the `exit` syscall with main's return value as the process exit code
 
 - `id.c` - print user, group and system identity by invoking only kernel syscalls
 

@@ -34,12 +34,12 @@ static void delay(void) {
 		;
 }
 
-void _ep(void) {
-	const char *m = "y";
-	char nl = '\n';
-	for (;;) {
-		fs(m);
-		fw(64, (void*)1, &nl, (void*)1);
-		delay();
-	}
+void _ep(int x, char **z) {
+        const char *m = (x > 1) ? z[1] : "y";
+        char nl = '\n';
+        for (;;) {
+                fs(m);
+                fw(64, (void*)1, &nl, (void*)1);
+                delay();
+        }
 }
